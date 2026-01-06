@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vehicle_status_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vehicle_id')->constrained('vehicles')->onDelete('cascade');
-            $table->foreignId('status_id')->constrained('vehicle_statuses')->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('resource_statuses')->onDelete('cascade');
             $table->string('description')->nullable();
             $table->timestamps();
         });
