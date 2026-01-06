@@ -58,12 +58,13 @@ class DashboardPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make()
                         ->simpleResourcePermissionView(),
                 \TomatoPHP\FilamentUsers\FilamentUsersPlugin::make(),
-                 FilamentEditProfilePlugin::make()
-                    ->setTitle('My Profile')
-                    ->setNavigationLabel('My Profile')
-                    ->setNavigationGroup('Group Profile')
-                    ->setIcon('heroicon-o-user')
-                    ->shouldShowAvatarForm(),
+                    FilamentEditProfilePlugin::make()        ->slug('my-profile')
+        ->setTitle('Mi Perfil')
+        ->setNavigationLabel('Mi Perfil')
+        ->setNavigationGroup('Ajustes')
+        ->setIcon('heroicon-o-user')
+        ->setSort(10)
+        ->shouldShowAvatarForm(true),
             ])
             ->authMiddleware([
                 Authenticate::class,

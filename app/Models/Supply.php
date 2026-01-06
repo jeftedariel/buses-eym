@@ -5,21 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class VehicleModel extends Model
+class Supply extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'year',
+        'description',
+        'quantity',
         'manufacturer_id',
-        'type_id',
+        'category_id',
     ];
 
     protected $casts = [
-        'year' => 'integer',
+        'quantity' => 'integer',
     ];
 
     public function manufacturer(): BelongsTo
@@ -27,13 +27,8 @@ class VehicleModel extends Model
         return $this->belongsTo(Manufacturer::class);
     }
 
-    public function type(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(VehicleType::class);
-    }
-
-    public function vehicles(): HasMany
-    {
-        return $this->hasMany(Vehicle::class, 'model_id');
+        return $this->belongsTo(SupplyCategory::class);
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class VehicleType extends Model
+class SupplyCategory extends Model
 {
     use HasFactory;
 
@@ -15,8 +15,8 @@ class VehicleType extends Model
         'description',
     ];
 
-    public function vehicleModels(): HasMany
+    public function supplies(): HasMany
     {
-        return $this->hasMany(VehicleModel::class, 'type_id');
+        return $this->hasMany(Supply::class, 'category_id');
     }
 }
