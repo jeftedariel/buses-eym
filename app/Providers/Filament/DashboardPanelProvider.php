@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 
 class DashboardPanelProvider extends PanelProvider
 {
@@ -56,11 +57,16 @@ class DashboardPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make()
                         ->simpleResourcePermissionView(),
-                \TomatoPHP\FilamentUsers\FilamentUsersPlugin::make()
+                \TomatoPHP\FilamentUsers\FilamentUsersPlugin::make(),
+                 FilamentEditProfilePlugin::make()
+                    ->setTitle('My Profile')
+                    ->setNavigationLabel('My Profile')
+                    ->setNavigationGroup('Group Profile')
+                    ->setIcon('heroicon-o-user')
+                    ->shouldShowAvatarForm(),
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-        ->profile();
+            ]);
     }
 }
