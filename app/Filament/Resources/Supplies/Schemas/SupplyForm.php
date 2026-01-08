@@ -13,18 +13,35 @@ class SupplyForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
-                TextInput::make('description'),
+                    ->required()
+                    ->label('Nombre'),
+                TextInput::make('description')
+                    ->label('Descripción'),
                 TextInput::make('quantity')
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->label('Cantidad'),
                 Select::make('manufacturer_id')
+                    ->label('Fabricante')
                     ->relationship('manufacturer', 'name')
-                    ->required(),
+                    ->required()
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->required()
+                            ->label('Nombre'),
+                    ]),
                 Select::make('category_id')
+                    ->label('Categoría')
                     ->relationship('category', 'name')
-                    ->required(),
+                    ->required()
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->required()
+                            ->label('Nombre'),
+                        TextInput::make('description')
+                            ->label('Descripción'),
+                    ]),
             ]);
     }
 }

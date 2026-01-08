@@ -16,21 +16,31 @@ class SuppliesTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable()
+                    ->label('Nombre'),
                 TextColumn::make('description')
+                    ->label('Descripción')
                     ->searchable(),
                 TextColumn::make('quantity')
+                    ->label('Cantidad')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('manufacturer.name')
-                    ->searchable(),
+                    ->label('Fabricante')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('category.name')
-                    ->searchable(),
+                    ->label('Categoría')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
+                    ->label('Creado el')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Actualizado el')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

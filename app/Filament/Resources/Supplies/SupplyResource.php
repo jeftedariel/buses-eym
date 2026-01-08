@@ -15,12 +15,19 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
+use UnitEnum;
 
 class SupplyResource extends Resource
 {
     protected static ?string $model = Supply::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Cube;
+    protected static UnitEnum|string|null $navigationGroup = 'Inventario';
+    protected static string|null $navigationLabel = 'Suplementos';
+    protected static ?string $recordTitleAttribute = 'suplemento';
+    protected static ?string $pluralLabel = 'Suplementos';
+    protected static ?string $modelLabel = 'Suplemento';
 
     public static function form(Schema $schema): Schema
     {

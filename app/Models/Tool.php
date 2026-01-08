@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Tool extends Model
 {
@@ -25,5 +26,16 @@ class Tool extends Model
     public function statusHistories(): HasMany
     {
         return $this->hasMany(ToolStatusHistory::class);
+    }
+
+    public function latestStatusHistory(): HasOne
+    {
+        return $this->hasOne(ToolStatusHistory::class)
+            ->latestOfMany();
+    }
+
+    public function getCurrentStatusAttribute()
+    {
+        return $this->latestStatusHistory?->status;
     }
 }

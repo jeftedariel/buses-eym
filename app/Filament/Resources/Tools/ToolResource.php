@@ -15,14 +15,20 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 class ToolResource extends Resource
 {
     protected static ?string $model = Tool::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Wrench;
+    protected static UnitEnum|string|null $navigationGroup = 'Inventario';
+    protected static string|null $navigationLabel = 'Herramientas';
+    protected static ?string $recordTitleAttribute = 'herramienta';
+    protected static ?string $pluralLabel = 'Herramientas';
+    protected static ?string $modelLabel = 'Herramienta';
 
-    protected static ?string $recordTitleAttribute = 'tool';
 
     public static function form(Schema $schema): Schema
     {
@@ -39,12 +45,6 @@ class ToolResource extends Resource
         return ToolsTable::configure($table);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
 
     public static function getPages(): array
     {
@@ -53,6 +53,19 @@ class ToolResource extends Resource
             'create' => CreateTool::route('/create'),
             'view' => ViewTool::route('/{record}'),
             'edit' => EditTool::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+             ->with(['type', 'latestStatusHistory.status']);
+    }
+
+        public static function getRelations(): array
+    {
+        return [
+            RelationManagers\StatusHistoriesRelationManager::class,
         ];
     }
 }

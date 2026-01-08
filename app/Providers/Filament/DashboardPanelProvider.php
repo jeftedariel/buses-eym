@@ -62,7 +62,7 @@ class DashboardPanelProvider extends PanelProvider
         ->setTitle('Mi Perfil')
         ->setNavigationLabel('Mi Perfil')
         ->setNavigationGroup('Ajustes')
-        ->setIcon('heroicon-o-user')
+        ->setIcon('heroicon-o-user-circle')
         ->setSort(10)
         ->shouldShowAvatarForm(true),
             ])
