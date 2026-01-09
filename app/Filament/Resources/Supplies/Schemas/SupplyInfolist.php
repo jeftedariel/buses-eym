@@ -73,30 +73,7 @@ class SupplyInfolist
                     ->columns(2)
                     ->collapsible(),
 
-                // Sección de Metadatos
-                Section::make('Información del Sistema')
-                    ->description('Fechas de registro y modificación')
-                    ->icon('heroicon-o-clock')
-                    ->schema([
-                        TextEntry::make('created_at')
-                            ->label('Fecha de Creación')
-                            ->dateTime('d/m/Y H:i')
-                            ->icon('heroicon-m-calendar-days')
-                            ->color('success')
-                            ->placeholder('No disponible')
-                            ->since(),
 
-                        TextEntry::make('updated_at')
-                            ->label('Última Actualización')
-                            ->dateTime('d/m/Y H:i')
-                            ->icon('heroicon-m-arrow-path')
-                            ->color('warning')
-                            ->placeholder('No disponible')
-                            ->since(),
-                    ])
-                    ->columns(2)
-                    ->collapsed()
-                    ->collapsible(),
             ]);
     }
 }

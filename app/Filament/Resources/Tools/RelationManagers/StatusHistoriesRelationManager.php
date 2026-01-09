@@ -49,7 +49,6 @@ class StatusHistoriesRelationManager extends RelationManager
                             ->required()
                             ->searchable()
                             ->preload()
-                            ->native(false)
                             ->live()
                             ->placeholder('Selecciona un estado')
                             ->createOptionForm([
@@ -60,12 +59,9 @@ class StatusHistoriesRelationManager extends RelationManager
                         Textarea::make('description')
                             ->label('Descripción / Motivo')
                             ->placeholder('Describe el motivo del cambio de estado...')
-                            ->rows(3)
-                            ->maxLength(500)
                             ->helperText('Opcional: Agrega detalles sobre este cambio de estado')
                             ->columnSpanFull(),
                     ])
-                    ->columns(1),
             ]);
     }
 
@@ -78,7 +74,7 @@ class StatusHistoriesRelationManager extends RelationManager
                 TextColumn::make('status.name')
                     ->label('Estado')
                     ->badge()
-                    ->color(fn ($record) => match($record->status?->name) {
+                    ->color(fn($record) => match ($record->status?->name) {
                         'Disponible' => 'success',
                         'En Uso' => 'warning',
                         'En Mantenimiento' => 'info',
@@ -86,7 +82,7 @@ class StatusHistoriesRelationManager extends RelationManager
                         'Fuera de Servicio' => 'gray',
                         default => 'gray',
                     })
-                    ->icon(fn ($record) => match($record->status?->name) {
+                    ->icon(fn($record) => match ($record->status?->name) {
                         'Disponible' => 'heroicon-o-check-circle',
                         'En Uso' => 'heroicon-o-clock',
                         'En Mantenimiento' => 'heroicon-o-wrench',
@@ -100,8 +96,7 @@ class StatusHistoriesRelationManager extends RelationManager
                 TextColumn::make('description')
                     ->label('Descripción')
                     ->placeholder('Sin descripción')
-                    ->limit(50)
-                    ->tooltip(fn ($record) => $record->description)
+                    ->tooltip(fn($record) => $record->description)
                     ->searchable()
                     ->wrap()
                     ->toggleable(),
@@ -110,7 +105,7 @@ class StatusHistoriesRelationManager extends RelationManager
                     ->label('Fecha de Cambio')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->tooltip(fn ($record) => $record->created_at->format('l, d \d\e F \d\e Y \a \l\a\s H:i:s'))
+                    ->tooltip(fn($record) => $record->created_at->format('l, d \d\e F \d\e Y \a \l\a\s H:i:s'))
                     ->color('gray')
                     ->icon('heroicon-m-calendar'),
 
@@ -145,16 +140,9 @@ class StatusHistoriesRelationManager extends RelationManager
                     ->modalHeading('Registrar Nuevo Estado')
                     ->modalDescription('Cambia el estado de la herramienta y opcionalmente agrega una descripción')
                     ->modalIcon('heroicon-o-arrow-path')
-                    ->modalWidth('lg')
                     ->successNotificationTitle('Estado registrado correctamente')
                     ->createAnother(false),
 
-                AssociateAction::make()
-                    ->label('Asociar Estado Existente')
-                    ->preloadRecordSelect()
-                    ->modalHeading('Asociar Estado Existente')
-                    ->modalDescription('Vincula un registro de estado existente a esta herramienta')
-                    ->successNotificationTitle('Estado asociado correctamente'),
             ])
             ->recordActions([
                 EditAction::make()
@@ -164,14 +152,6 @@ class StatusHistoriesRelationManager extends RelationManager
                     ->modalIcon('heroicon-o-pencil')
                     ->modalWidth('lg')
                     ->successNotificationTitle('Estado actualizado correctamente'),
-
-                DissociateAction::make()
-                    ->label('Desvincular')
-                    ->requiresConfirmation()
-                    ->modalHeading('Desvincular Estado')
-                    ->modalDescription('¿Estás seguro de que deseas desvincular este estado?')
-                    ->modalIcon('heroicon-o-link-slash')
-                    ->successNotificationTitle('Estado desvinculado correctamente'),
 
                 DeleteAction::make()
                     ->label('Eliminar')
@@ -183,13 +163,6 @@ class StatusHistoriesRelationManager extends RelationManager
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DissociateBulkAction::make()
-                        ->label('Desvincular seleccionados')
-                        ->successNotificationTitle('Estados desvinculados correctamente')
-                        ->requiresConfirmation()
-                        ->modalHeading('Desvincular Estados Seleccionados')
-                        ->modalDescription('¿Estás seguro de que deseas desvincular estos estados?')
-                        ->modalIcon('heroicon-o-link-slash'),
 
                     DeleteBulkAction::make()
                         ->label('Eliminar seleccionados')

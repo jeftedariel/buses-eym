@@ -111,34 +111,6 @@ class ToolInfolist
                         ->compact(),
                 ])->columns(3),
 
-                // Información del Sistema
-                Section::make('Registro del Sistema')
-                    ->icon('heroicon-o-information-circle')
-                    ->description('Información de registro y modificación')
-                    ->schema([
-                        Group::make([
-                            TextEntry::make('created_at')
-                                ->label('Creado')
-                                ->dateTime('d M Y, H:i')
-                                ->icon('heroicon-m-plus-circle')
-                                ->color('success')
-                                ->badge()
-                                ->since()
-                                ->tooltip(fn ($record) => $record->created_at?->format('l, d \d\e F \d\e Y \a \l\a\s H:i:s')),
-
-                            TextEntry::make('updated_at')
-                                ->label('Actualizado')
-                                ->dateTime('d M Y, H:i')
-                                ->icon('heroicon-m-arrow-path')
-                                ->color('gray')
-                                ->badge()
-                                ->since()
-                                ->tooltip(fn ($record) => $record->updated_at?->format('l, d \d\e F \d\e Y \a \l\a\s H:i:s')),
-                        ])->columns(2),
-                    ])
-                    ->collapsed()
-                    ->collapsible(),
-            ])
-            ->columns(2);
+            ]);
     }
 }
