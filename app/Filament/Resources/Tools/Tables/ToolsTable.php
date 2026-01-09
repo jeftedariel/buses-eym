@@ -60,11 +60,11 @@ class ToolsTable
                                 }),
 
                 TextColumn::make('latestStatusHistory.created_at')
-                    ->label('Último Cambio')
+                    ->label('Último Cambio de Estado')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->since()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
                     ->label('Fecha de Creación')

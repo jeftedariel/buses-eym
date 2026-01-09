@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Tools\RelationManagers;
+namespace App\Filament\Resources\Vehicles\RelationManagers;
 
 use BackedEnum;
 use Dom\Text;
@@ -40,7 +40,7 @@ class StatusHistoriesRelationManager extends RelationManager
         return $schema
             ->components([
                 ComponentsSection::make('Cambio de Estado')
-                    ->description('Registra un nuevo estado para la herramienta')
+                    ->description('Registra un nuevo estado para el vehículo')
                     ->icon('heroicon-o-arrow-path')
                     ->schema([
                         Select::make('status_id')
@@ -138,7 +138,7 @@ class StatusHistoriesRelationManager extends RelationManager
                     ->label('Agregar Estado')
                     ->icon('heroicon-o-plus-circle')
                     ->modalHeading('Registrar Nuevo Estado')
-                    ->modalDescription('Cambia el estado de la herramienta y opcionalmente agrega una descripción')
+                    ->modalDescription('Cambia el estado del vehículo y opcionalmente agrega una descripción')
                     ->modalIcon('heroicon-o-arrow-path')
                     ->successNotificationTitle('Estado registrado correctamente')
                     ->createAnother(false),

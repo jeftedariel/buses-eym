@@ -52,6 +52,35 @@ class VehiclesTable
                 TextColumn::make('license_plate')
                     ->label('Placa')
                     ->searchable(),
+                 TextColumn::make('latestStatusHistory.status.name')
+                    ->label('Estado Actual')
+                    ->badge()
+                    ->searchable()
+                    ->sortable()
+                    ->default('-')
+                    ->color(fn ($record) => match($record->latestStatusHistory?->status?->name) {
+                                    'Disponible' => 'success',
+                                    'En Uso' => 'warning',
+                                    'En Mantenimiento' => 'info',
+                                    'Dañada' => 'danger',
+                                    'Fuera de Servicio' => 'gray',
+                                    default => 'gray',
+                                })
+                    ->icon(fn ($record) => match($record->latestStatusHistory?->status?->name) {
+                                    'Disponible' => 'heroicon-o-check-circle',
+                                    'En Uso' => 'heroicon-o-clock',
+                                    'En Mantenimiento' => 'heroicon-o-wrench',
+                                    'Dañada' => 'heroicon-o-exclamation-triangle',
+                                    'Fuera de Servicio' => 'heroicon-o-x-circle',
+                                    default => 'heroicon-o-question-mark-circle',
+                                }),
+
+                TextColumn::make('latestStatusHistory.created_at')
+                    ->label('Último Cambio de Estado')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->since()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Creado')
                     ->dateTime()

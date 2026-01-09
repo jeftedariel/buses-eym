@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Vehicles;
 
+use App\Filament\Resources\Tools\RelationManagers\StatusHistoriesRelationManager;
 use App\Filament\Resources\Vehicles\Pages\CreateVehicle;
 use App\Filament\Resources\Vehicles\Pages\EditVehicle;
 use App\Filament\Resources\Vehicles\Pages\ListVehicles;
@@ -15,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use PHPUnit\Logging\OpenTestReporting\Status;
 use UnitEnum;
 
 class VehicleResource extends Resource
@@ -47,7 +49,7 @@ class VehicleResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            StatusHistoriesRelationManager::class,
         ];
     }
 
@@ -60,4 +62,5 @@ class VehicleResource extends Resource
             'edit' => EditVehicle::route('/{record}/edit'),
         ];
     }
+
 }
