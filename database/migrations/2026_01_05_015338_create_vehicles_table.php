@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->boolean('available')->nullable()->default(true);
             $table->boolean('displayable')->nullable()->default(true);
-            $table->foreignId('model_id')->constrained()->onDelete('cascade');
+            $table->foreignId('model_id')->constrained('vehicle_models')->onDelete('cascade');
             $table->timestamps();
         });
     }

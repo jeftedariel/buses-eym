@@ -24,7 +24,8 @@ class VehicleResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Truck;
     protected static UnitEnum|string|null $navigationGroup = 'Inventario';
     protected static string|null $navigationLabel = 'Vehículos';
-
+    protected static ?string $pluralLabel = 'Vehículos';
+    protected static ?string $modelLabel = 'Vehículo';
 
     protected static ?string $recordTitleAttribute = 'vehicle';
 

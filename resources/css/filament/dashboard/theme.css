@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+@source '../../../../app/Filament';
+@source '../../../../vendor/filament';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+

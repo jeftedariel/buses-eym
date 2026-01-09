@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Devonab\FilamentEasyFooter\EasyFooterPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -20,6 +21,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use TomatoPHP\FilamentUsers\FilamentUsersPlugin;
 
 class DashboardPanelProvider extends PanelProvider
 {
@@ -29,10 +31,19 @@ class DashboardPanelProvider extends PanelProvider
             ->default()
             ->id('dashboard')
             ->path('dashboard')
+            ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->login()
-            ->colors([
-                'primary' => Color::Amber,
+            ->brandName('Buses E&M')
+           ->viteTheme('resources/css/filament/dashboard/theme.css') // ← Añade esta línea
+           ->colors([
+                'danger' => Color::Rose,
+                'gray' => Color::Gray,
+                'info' => Color::Cyan,  // Cambiado de Blue a Cyan para un tono más celeste
+                'primary' => Color::Sky,  // Cambiado de Indigo a Sky para un azul más claro
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
+
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -57,14 +68,24 @@ class DashboardPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make()
                         ->simpleResourcePermissionView(),
-                \TomatoPHP\FilamentUsers\FilamentUsersPlugin::make(),
-                    FilamentEditProfilePlugin::make()        ->slug('my-profile')
-        ->setTitle('Mi Perfil')
-        ->setNavigationLabel('Mi Perfil')
-        ->setNavigationGroup('Ajustes')
-        ->setIcon('heroicon-o-user-circle')
-        ->setSort(10)
-        ->shouldShowAvatarForm(true),
+                FilamentUsersPlugin::make(),
+                FilamentEditProfilePlugin::make()
+                    ->slug('my-profile')
+                    ->setTitle('Mi Perfil')
+                    ->setNavigationLabel('Mi Perfil')
+                    ->setNavigationGroup('Ajustes')
+                    ->setIcon('heroicon-o-user-circle')
+                    ->setSort(10)
+                    ->shouldShowAvatarForm(true),
+                EasyFooterPlugin::make()
+                    ->withBorder()
+                    ->withLoadTime()
+                    ->withLogo(
+                        'https://www.boltbitcr.com/_astro/boltbit.DDpEAhKz.png',
+                        'https://www.boltbitcr.com',
+                        'Desarrollado por ',
+                        25
+                    ),
             ])
             ->authMiddleware([
                 Authenticate::class,
