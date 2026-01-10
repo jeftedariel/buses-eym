@@ -6,6 +6,8 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -98,6 +100,25 @@ class VehiclesTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                ActionGroup::make([
+                    Action::make('downloadDetailedPdf')
+                    ->label('PDF Detallado')
+                    ->icon('heroicon-o-document-text')
+                    ->color('info')
+                    ->url(fn ($record) => route('vehicles.pdf.detailed', $record))
+                    ->openUrlInNewTab(),
+                    Action::make('downloadClientPdf')
+                    ->label('PDF Cliente')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('success')
+                    ->url(fn ($record) => route('vehicles.pdf.client', $record))
+                    ->openUrlInNewTab(),
+                    ])
+    ->label('Exportar')
+    ->icon('heroicon-m-ellipsis-vertical')
+    ->color('primary')
+    ->button()
+
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

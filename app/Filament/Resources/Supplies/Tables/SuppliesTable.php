@@ -6,8 +6,11 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Notifications\Notification;
 
 class SuppliesTable
 {
@@ -25,7 +28,14 @@ class SuppliesTable
                 TextColumn::make('quantity')
                     ->label('Cantidad')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color(fn (int $state): string => match (true) {
+                        $state === 0 => 'danger',
+                        $state < 10 => 'warning',
+                        $state < 50 => 'info',
+                        default => 'success',
+                    }),
                 TextColumn::make('manufacturer.name')
                     ->label('Fabricante')
                     ->searchable()
@@ -51,6 +61,43 @@ class SuppliesTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('decrease')
+                    ->label('Retirar Existencias')
+                    ->icon('heroicon-m-minus-circle')
+                    ->color('warning')
+                    ->requiresConfirmation()
+                    ->modalHeading('Retirar Existencias')
+                    ->modalDescription(fn ($record) => "Stock actual: {$record->quantity} unidades")
+                    ->modalIcon('heroicon-o-minus-circle')
+                    ->form([
+                        TextInput::make('quantity_to_decrease')
+                            ->label('Cantidad a retirar')
+                            ->numeric()
+                            ->required()
+                            ->minValue(1)
+                            ->maxValue(fn ($record) => $record->quantity)
+                            ->helperText(fn ($record) => "Máximo disponible: {$record->quantity} unidades")
+                            ->live()
+                            ->afterStateUpdated(function ($state, $set, $record) {
+                                if ($state > $record->quantity) {
+                                    $set('quantity_to_decrease', $record->quantity);
+                                }
+                            }),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $newQuantity = $record->quantity - $data['quantity_to_decrease'];
+
+                        $record->update([
+                            'quantity' => $newQuantity,
+                        ]);
+
+                        Notification::make()
+                            ->title('Existencias actualizadas')
+                            ->body("Se disminuyeron {$data['quantity_to_decrease']} unidades. Stock actual: {$newQuantity}")
+                            ->success()
+                            ->send();
+                    })
+                    ->visible(fn ($record) => $record->quantity > 0),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

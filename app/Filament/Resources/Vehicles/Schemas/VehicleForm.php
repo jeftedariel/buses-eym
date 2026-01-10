@@ -16,15 +16,41 @@ class VehicleForm
     {
         return $schema
             ->components([
-                Select::make('model_id')
-                    ->relationship('model', 'name')
+                 Select::make('model_id')
+                    ->relationship(
+                        name: 'model',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn ($query) => $query->with(['manufacturer', 'type'])
+                    )
                     ->label('Modelo')
                     ->required()
+                    ->searchable()
+                    ->preload()
+                    ->getSearchResultsUsing(function (string $search) {
+                        return \App\Models\VehicleModel::query()
+                            ->with(['manufacturer', 'type'])
+                            ->where(function ($query) use ($search) {
+                                $query->where('name', 'like', "%{$search}%")
+                                    ->orWhere('year', 'like', "%{$search}%")
+                                    ->orWhereHas('manufacturer', function ($q) use ($search) {
+                                        $q->where('name', 'like', "%{$search}%");
+                                    });
+                            })
+                            ->limit(50)
+                            ->get()
+                            ->mapWithKeys(fn ($record) => [
+                                $record->id => "{$record->manufacturer->name} - {$record->name} - {$record->year}"
+                            ]);
+                    })
+                    ->getOptionLabelFromRecordUsing(fn ($record) =>
+                        "{$record->manufacturer->name} - {$record->name} - {$record->year}"
+                    )
                     ->createOptionForm([
                         Select::make('manufacturer_id')
                             ->relationship('manufacturer', 'name')
                             ->label('Fabricante')
                             ->required()
+                            ->searchable()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->label('Nombre')
@@ -34,6 +60,7 @@ class VehicleForm
                             ->relationship('type', 'name')
                             ->label('Tipo')
                             ->required()
+                            ->searchable()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->label('Nombre')
