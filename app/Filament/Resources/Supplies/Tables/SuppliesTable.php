@@ -11,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
+use Filament\Tables\Filters\SelectFilter;
 
 class SuppliesTable
 {
@@ -56,7 +57,16 @@ class SuppliesTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('manufacturer_id')
+                    ->label('Fabricante')
+                    ->relationship('manufacturer', 'name')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('category_id')
+                    ->label('Categoría')
+                    ->relationship('category', 'name')
+                    ->preload()
+                    ->searchable(),
             ])
             ->recordActions([
                 ViewAction::make(),

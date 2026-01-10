@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tools\Tables;
 
+use App\Filament\Resources\Tools\RelationManagers\StatusHistoriesRelationManager;
 use App\Models\ToolStatusHistory;
 use Dom\Text;
 use Filament\Actions\BulkActionGroup;
@@ -11,7 +12,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-
+use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 class ToolsTable
 {
     public static function configure(Table $table): Table
@@ -117,6 +118,10 @@ class ToolsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                RelationManagerAction::make('statusHistories')
+                    ->label('Historial de Estados')
+                    ->icon('heroicon-o-archive-box')
+                    ->relationManager(StatusHistoriesRelationManager::class),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -25,6 +25,7 @@ use Filament\Tables\Table;
 
 class StatusHistoriesRelationManager extends RelationManager
 {
+
     protected static string $relationship = 'statusHistories';
 
     protected static ?string $title = 'Historial de Estados';

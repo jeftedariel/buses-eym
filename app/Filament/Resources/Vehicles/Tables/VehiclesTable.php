@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Vehicles\Tables;
 
+use App\Filament\Resources\Tools\RelationManagers\StatusHistoriesRelationManager;
 use App\Models\Vehicle;
 use App\Models\VehicleModel;
 use App\Models\VehicleStatusHistory;
@@ -18,6 +19,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 
 class VehiclesTable
 {
@@ -221,6 +223,10 @@ class VehiclesTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                RelationManagerAction::make('statusHistories')
+                    ->label('Historial de Estados')
+                    ->icon('heroicon-o-archive-box')
+                    ->relationManager(StatusHistoriesRelationManager::class),
                 ActionGroup::make([
                     Action::make('downloadDetailedPdf')
                     ->label('PDF Detallado')
@@ -235,6 +241,7 @@ class VehiclesTable
                     ->url(fn ($record) => route('vehicles.pdf.client', $record))
                     ->openUrlInNewTab(),
                     ])
+
     ->label('Exportar')
     ->icon('heroicon-m-ellipsis-vertical')
     ->color('primary')

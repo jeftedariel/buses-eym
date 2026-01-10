@@ -12,6 +12,7 @@
         "bezhansalleh/filament-shield": "^4.0",
         "devonab/filament-easy-footer": "^2.0",
         "filament/filament": "^4.0",
+        "guava/filament-modal-relation-managers": "^2.0",
         "jacobtims/filament-logger": "^1.0",
         "joaopaulolndev/filament-edit-profile": "^2.0",
         "laravel/fortify": "^1.30",

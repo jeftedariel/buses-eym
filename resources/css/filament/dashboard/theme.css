@@ -2,4 +2,4 @@
 @source '../../../../app/Filament';
 @source '../../../../vendor/filament';
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
-
+@source '../../../../vendor/guava/filament-modal-relation-managers/resources/**/*';
