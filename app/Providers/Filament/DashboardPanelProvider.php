@@ -2,6 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\InventoryStatsOverviewWidget;
+use App\Filament\Widgets\LowStockSuppliesWidget;
+use App\Filament\Widgets\RecentStatusChangesWidget;
+use App\Filament\Widgets\ToolStatusChangesWidget;
+use App\Filament\Widgets\ToolStatusChartWidget;
+use App\Filament\Widgets\VehicleStatusChartWidget;
+use App\Models\Vehicle;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Devonab\FilamentEasyFooter\EasyFooterPlugin;
@@ -51,8 +58,12 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                InventoryStatsOverviewWidget::class,
+                LowStockSuppliesWidget::class,
+                RecentStatusChangesWidget::class,
+                ToolStatusChangesWidget::class,
+                ToolStatusChartWidget::class,
+                VehicleStatusChartWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
