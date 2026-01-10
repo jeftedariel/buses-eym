@@ -27,6 +27,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jacobtims\FilamentLogger\FilamentLoggerPlugin;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use TomatoPHP\FilamentUsers\FilamentUsersPlugin;
 
@@ -36,6 +37,7 @@ class DashboardPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->globalSearch(false)
             ->id('dashboard')
             ->path('dashboard')
             ->viteTheme('resources/css/filament/dashboard/theme.css')
@@ -100,6 +102,8 @@ class DashboardPanelProvider extends PanelProvider
                         'Desarrollado por ',
                         25
                     ),
+                FilamentLoggerPlugin::make(),
+
             ])
             ->authMiddleware([
                 Authenticate::class,

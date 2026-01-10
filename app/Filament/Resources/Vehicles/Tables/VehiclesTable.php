@@ -2,15 +2,21 @@
 
 namespace App\Filament\Resources\Vehicles\Tables;
 
+use App\Models\Vehicle;
+use App\Models\VehicleModel;
+use App\Models\VehicleStatusHistory;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class VehiclesTable
@@ -28,15 +34,19 @@ class VehiclesTable
                     ->imageGallery(),
                 TextColumn::make('model.manufacturer.name')
                     ->label('Fabricante')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('model.type.name')
                     ->label('Tipo')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('model.name')
                     ->label('Modelo')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('model.year')
                     ->label('Año')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('capacity')
                     ->label('Capacidad Asientos')
@@ -44,15 +54,19 @@ class VehiclesTable
                     ->sortable(),
                 TextColumn::make('transmission')
                     ->label('Transmisión')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('motor_displacement')
                     ->label('Motor (L)')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('color')
                     ->label('Color')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('license_plate')
                     ->label('Placa')
+                    ->sortable()
                     ->searchable(),
                  TextColumn::make('latestStatusHistory.status.name')
                     ->label('Estado Actual')
@@ -95,8 +109,115 @@ class VehiclesTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Estado')
+                    ->preload()
+                    ->searchable()
+                    ->query(fn ($query, $data) => (
+                        isset($data['value']) && $data['value'] !== ''
+                            ? $query->whereHas('latestStatusHistory.status', fn ($q) => $q->where('id', $data['value']))
+                            : $query
+                    ))
+                    ->options(
+                        VehicleStatusHistory::select('status_id')
+                            ->distinct()
+                            ->with('status')
+                            ->get()
+                            ->pluck('status.name', 'status.id')
+                            ->toArray()
+                    ),
+                SelectFilter::make('model.manufacturer_id')
+                    ->label('Fabricante')
+                    ->relationship('model.manufacturer', 'name')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('model.type_id')
+                    ->label('Tipo')
+                    ->relationship('model.type', 'name')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('model_year')
+                    ->label('Año')
+                    ->query(fn ($query, $data) => (
+                        isset($data['value']) && $data['value'] !== ''
+                            ? $query->whereHas('model', fn ($q) => $q->where('year', $data['value']))
+                            : $query
+                    ))
+                    ->options(
+                        VehicleModel::select('year')
+                            ->distinct()
+                            ->orderBy('year', 'desc')
+                            ->pluck('year', 'year')
+                            ->toArray()
+                    )
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('model_name')
+                    ->label('Modelo')
+                    ->query(fn ($query, $data) => (
+                        isset($data['value']) && $data['value'] !== ''
+                            ? $query->whereHas('model', fn ($q) => $q->where('name', $data['value']))
+                            : $query
+                    ))
+                    ->options(
+                        VehicleModel::select('name')
+                            ->distinct()
+                            ->orderBy('name')
+                            ->pluck('name', 'name')
+                            ->toArray()
+                    )
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('transmission')
+                    ->label('Transmisión')
+                    ->preload()
+                    ->searchable()
+                    ->query(fn ($query, $data) => (
+                        isset($data['value']) && $data['value'] !== ''
+                            ? $query->where('transmission', $data['value'])
+                            : $query
+                    ))
+                    ->options([
+                        Vehicle::select('transmission')->distinct()->pluck('transmission', 'transmission')->toArray()
+                    ]),
+                SelectFilter::make('capacity')
+                    ->label('Capacidad Asientos')
+                    ->preload()
+                    ->searchable()
+                    ->query(fn ($query, $data) => (
+                        isset($data['value']) && $data['value'] !== ''
+                            ? $query->where('capacity', $data['value'])
+                            : $query
+                    ))
+                    ->options([
+                        Vehicle::select('capacity')->distinct()->pluck('capacity', 'capacity')->toArray()
+                    ]),
+                SelectFilter::make('motor_displacement')
+                    ->label('Motor (L)')
+                    ->preload()
+                    ->searchable()
+                    ->query(fn ($query, $data) => (
+                        isset($data['value']) && $data['value'] !== ''
+                            ? $query->where('motor_displacement', $data['value'])
+                            : $query
+                    ))
+                    ->options([
+                        Vehicle::select('motor_displacement')->distinct()->pluck('motor_displacement', 'motor_displacement')->toArray()
+                    ]),
+                SelectFilter::make('color')
+                    ->label('Color')
+                    ->preload()
+                    ->searchable()
+                    ->query(fn ($query, $data) => (
+                        isset($data['value']) && $data['value'] !== ''
+                            ? $query->where('color', $data['value'])
+                            : $query
+                    ))
+                    ->options([
+                        Vehicle::select('color')->distinct()->pluck('color', 'color')->toArray()
+                    ]),
             ])
+            ->defaultSort('updated_at', 'desc')
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
