@@ -45,7 +45,7 @@ class DashboardPanelProvider extends PanelProvider
             ->brandName('Buses E&M')
             ->brandLogo(asset('images/logo.png'))
             ->brandLogoHeight('40px')
-            ->favicon(asset('images/logo.png'))
+            ->favicon(asset('images/favicon.png'))
            ->viteTheme('resources/css/filament/dashboard/theme.css') // ← Añade esta línea
            ->colors([
                 'danger' => Color::Rose,

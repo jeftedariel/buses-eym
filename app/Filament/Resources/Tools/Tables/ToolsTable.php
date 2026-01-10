@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\Tools\Tables;
 
+use App\Models\ToolStatusHistory;
 use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class ToolsTable
@@ -79,7 +81,38 @@ class ToolsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('type_id')
+                    ->label('Tipo de Herramienta')
+                    ->relationship('type', 'name')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('manufacturer_id')
+                    ->label('Fabricante')
+                    ->relationship('type.manufacturer', 'name')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('category_id')
+                    ->label('Categoría')
+                    ->relationship('type.category', 'name')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('status')
+                    ->label('Estado')
+                    ->preload()
+                    ->searchable()
+                    ->query(fn ($query, $data) => (
+                        isset($data['value']) && $data['value'] !== ''
+                            ? $query->whereHas('latestStatusHistory.status', fn ($q) => $q->where('id', $data['value']))
+                            : $query
+                    ))
+                    ->options(
+                        ToolStatusHistory::select('status_id')
+                            ->distinct()
+                            ->with('status')
+                            ->get()
+                            ->pluck('status.name', 'status.id')
+                            ->toArray()
+                    ),
             ])
             ->recordActions([
                 ViewAction::make(),
