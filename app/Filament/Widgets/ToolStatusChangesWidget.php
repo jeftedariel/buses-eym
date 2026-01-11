@@ -24,20 +24,16 @@ class ToolStatusChangesWidget extends BaseWidget
                     ->limit(5)
             )
             ->columns([
-                TextColumn::make('resource_type')
-                    ->label('Tipo')
-                    ->badge()
-                    ->state('Herramienta')
-                    ->color('success')
-                    ->icon('heroicon-m-wrench-screwdriver'),
-
                 TextColumn::make('tool.type.name')
-                    ->label('Recurso')
+                    ->label('Tipo')
                     ->formatStateUsing(fn ($record) =>
                         ($record->tool?->type?->name ?? 'N/A') .
                         ' (' . ($record->tool?->code ?? 'Sin código') . ')'
                     )
                     ->searchable()
+                    ->color('success')
+                    ->icon('heroicon-m-wrench-screwdriver')
+                    ->badge()
                     ->weight('bold'),
 
                 TextColumn::make('status.name')
