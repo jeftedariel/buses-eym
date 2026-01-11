@@ -91,7 +91,7 @@ class VehicleForm
                 TextInput::make('license_plate')
                     ->label('Placa'),
                 FileUpload::make('images')
-                    ->label('Img')
+                    ->label('Imágenes')
                     ->image()
                     ->multiple()
                     ->directory('vehicles'),
