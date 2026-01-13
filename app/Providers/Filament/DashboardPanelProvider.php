@@ -46,8 +46,8 @@ class DashboardPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logo.png'))
             ->brandLogoHeight('40px')
             ->favicon(asset('images/favicon.png'))
-           ->viteTheme('resources/css/filament/dashboard/theme.css') // ← Añade esta línea
-           ->colors([
+            ->viteTheme('resources/css/filament/dashboard/theme.css') // ← Añade esta línea
+            ->colors([
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
                 'info' => Color::Cyan,  // Cambiado de Blue a Cyan para un tono más celeste
@@ -83,7 +83,21 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
-                        ->simpleResourcePermissionView(),
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 3
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 4,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
                 FilamentUsersPlugin::make(),
                 FilamentEditProfilePlugin::make()
                     ->slug('my-profile')
