@@ -17,6 +17,4 @@ Route::middleware(['auth'])->group(function () {
         ->name('vehicles.pdf.client');
 });
 
-Route::get('/',function(){
-    return redirect()->route('filament.auth.login');
-});
+Route::redirect('/', '/dashboard', 301);
