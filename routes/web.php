@@ -16,3 +16,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vehicles/{vehicle}/pdf/client', [VehiclePdfController::class, 'downloadClient'])
         ->name('vehicles.pdf.client');
 });
+
+Route::get('/',function(){
+    return redirect()->route('filament.auth.login');
+});
