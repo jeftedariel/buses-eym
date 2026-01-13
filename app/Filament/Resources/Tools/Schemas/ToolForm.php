@@ -23,6 +23,8 @@ class ToolForm
                     ->label('Tipo de Herramienta')
                     ->relationship('type', 'name')
                     ->required()
+                    ->searchable()
+                    ->preload()
                     ->createOptionForm([
                         TextInput::make('name')
                             ->required()
@@ -32,6 +34,8 @@ class ToolForm
                         Select::make('manufacturer_id')
                             ->label('Fabricante')
                             ->relationship('manufacturer', 'name')
+                            ->preload()
+                            ->searchable()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->required()
@@ -43,6 +47,8 @@ class ToolForm
                         Select::make('category_id')
                             ->label('Categoría')
                             ->relationship('category', 'name')
+                            ->preload()
+                            ->searchable()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->required()

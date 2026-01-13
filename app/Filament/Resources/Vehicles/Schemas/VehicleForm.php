@@ -51,6 +51,7 @@ class VehicleForm
                             ->label('Fabricante')
                             ->required()
                             ->searchable()
+                            ->preload()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->label('Nombre')
@@ -60,6 +61,7 @@ class VehicleForm
                             ->relationship('type', 'name')
                             ->label('Tipo')
                             ->required()
+                            ->preload()
                             ->searchable()
                             ->createOptionForm([
                                 TextInput::make('name')

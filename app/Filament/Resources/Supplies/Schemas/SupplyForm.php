@@ -26,6 +26,8 @@ class SupplyForm
                     ->label('Fabricante')
                     ->relationship('manufacturer', 'name')
                     ->required()
+                    ->preload()
+                    ->searchable()
                     ->createOptionForm([
                         TextInput::make('name')
                             ->required()
@@ -35,6 +37,8 @@ class SupplyForm
                     ->label('Categoría')
                     ->relationship('category', 'name')
                     ->required()
+                    ->preload()
+                    ->searchable()
                     ->createOptionForm([
                         TextInput::make('name')
                             ->required()
