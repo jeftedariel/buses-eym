@@ -19,6 +19,10 @@ class Tool extends Model
         'images',
     ];
 
+        protected $casts = [
+        'images' => 'array',
+    ];
+
     public function type(): BelongsTo
     {
         return $this->belongsTo(ToolType::class);
