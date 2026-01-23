@@ -16,6 +16,7 @@ class ToolType extends Model
         'description',
         'manufacturer_id',
         'category_id',
+        'images',
     ];
 
     public function manufacturer(): BelongsTo
