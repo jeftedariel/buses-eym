@@ -20,6 +20,11 @@ class ToolForm
                     ->required(),
                 TextInput::make('description')
                     ->label('Descripción'),
+                FileUpload::make('images')
+                            ->label('Imágenes')
+                            ->image()
+                            ->multiple()
+                            ->directory('tools'),
                 Select::make('type_id')
                     ->label('Tipo de Herramienta')
                     ->relationship('type', 'name')
@@ -60,11 +65,7 @@ class ToolForm
                             ->createOptionUsing(function (array $data) {
                                 return ToolCategory::create($data)->id;
                             }),
-                        FileUpload::make('images')
-                            ->label('Imágenes')
-                            ->image()
-                            ->multiple()
-                            ->directory('tools'),
+
                     ]),
             ]);
         }
