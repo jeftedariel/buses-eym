@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tools\Schemas;
 
+use Alsaloul\ImageGallery\Infolists\Entries\ImageGalleryEntry;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -13,6 +14,18 @@ class ToolInfolist
     {
         return $schema
             ->components([
+
+                Section::make('Galería de Imágenes')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
+                        ImageGalleryEntry::make('images')
+                            ->disk(config('filesystems.default'))
+                            ->thumbWidth(128)
+                            ->thumbHeight(128)
+                            ->imageGap('gap-4'),
+                    ])
+                    ->collapsible()
+                    ->collapsed(fn ($record) => empty($record->images)),
                 // Header Principal
                 Section::make()
                     ->schema([

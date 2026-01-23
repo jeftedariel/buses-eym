@@ -9,6 +9,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -19,6 +20,13 @@ class ToolsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('images')
+                    ->label('Img')
+                    ->imageHeight(30)
+                    ->circular()
+                    ->stacked()
+                    ->limit(3)
+                    ->imageGallery(),
                 TextColumn::make('code')
                     ->label('Código')
                     ->searchable()

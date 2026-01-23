@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Tools\Schemas;
 use App\Models\Manufacturer;
 use App\Models\ToolCategory;
 use Dom\Text;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -59,7 +60,12 @@ class ToolForm
                             ->createOptionUsing(function (array $data) {
                                 return ToolCategory::create($data)->id;
                             }),
+                        FileUpload::make('images')
+                            ->label('Imágenes')
+                            ->image()
+                            ->multiple()
+                            ->directory('tools'),
                     ]),
             ]);
-    }
+        }
 }
