@@ -22,8 +22,7 @@ class ToolsTable
             ->columns([
                 ImageColumn::make('images')
                     ->label('Img')
-                    ->imageHeight(30)
-                    ->circular()
+                    ->imageHeight(35)
                     ->stacked()
                     ->limit(3)
                     ->imageGallery(),
