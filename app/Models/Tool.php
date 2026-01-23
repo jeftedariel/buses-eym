@@ -16,6 +16,7 @@ class Tool extends Model
         'code',
         'description',
         'type_id',
+        'images',
     ];
 
     public function type(): BelongsTo
