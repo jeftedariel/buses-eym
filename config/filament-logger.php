@@ -26,6 +26,7 @@ return [
         'logger' => \Jacobtims\FilamentLogger\Loggers\AccessLogger::class,
         'color' => 'danger',
         'log_name' => 'Access',
+
     ],
 
     'notifications' => [
