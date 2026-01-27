@@ -11,6 +11,7 @@ use App\Filament\Resources\Tools\Schemas\ToolInfolist;
 use App\Filament\Resources\Tools\Tables\ToolsTable;
 use App\Models\Tool;
 use BackedEnum;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -66,6 +67,7 @@ class ToolResource extends Resource
     {
         return [
             RelationManagers\StatusHistoriesRelationManager::class,
+            RelationManagers\AssignmentsRelationManager::class,
         ];
     }
 }

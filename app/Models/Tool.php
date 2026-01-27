@@ -43,4 +43,25 @@ class Tool extends Model
     {
         return $this->latestStatusHistory?->status;
     }
+
+
+    public function assignments(): HasMany
+{
+    return $this->hasMany(ToolAssignment::class);
+}
+
+public function currentAssignment(): HasOne
+{
+    return $this->hasOne(ToolAssignment::class)->whereNull('returned_at')->latestOfMany();
+}
+
+public function isAssigned(): bool
+{
+    return $this->currentAssignment()->exists();
+}
+
+public function assignedEmployee()
+{
+    return $this->currentAssignment?->employee;
+}
 }

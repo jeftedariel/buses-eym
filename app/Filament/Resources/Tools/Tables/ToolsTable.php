@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Tools\Tables;
 
+use App\Filament\Resources\Tools\Actions\AssignToolAction;
+use App\Filament\Resources\Tools\RelationManagers\AssignmentsRelationManager;
 use App\Filament\Resources\Tools\RelationManagers\StatusHistoriesRelationManager;
 use App\Models\ToolStatusHistory;
 use Dom\Text;
@@ -14,6 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
+
 class ToolsTable
 {
     public static function configure(Table $table): Table
@@ -22,7 +25,7 @@ class ToolsTable
             ->columns([
                 ImageColumn::make('images')
                     ->label('Img')
-                    ->imageHeight(35 )
+                    ->imageHeight(35)
                     ->stacked()
                     ->limit(3)
                     ->imageGallery(),
@@ -46,28 +49,40 @@ class ToolsTable
                 TextColumn::make('type.category.name')
                     ->label('Categoría')
                     ->sortable(),
+                TextColumn::make('currentAssignment.employee.name')
+                    ->label('Asignada a')
+                    ->default('-')
+                    ->badge()
+                    ->color(fn($record) => $record->isAssigned() ? 'info' : 'secondary')
+                    ->icon(fn($record) => $record->isAssigned() ? 'heroicon-o-user' : 'heroicon-o-question-mark-circle')
+                    ->description(
+                        fn($record) => $record->isAssigned()
+                            ? 'Desde: ' . $record->currentAssignment->assigned_at->format('d/m/Y')
+                            : null
+                    ),
+
                 TextColumn::make('latestStatusHistory.status.name')
                     ->label('Estado Actual')
                     ->badge()
                     ->searchable()
                     ->sortable()
                     ->default('-')
-                    ->color(fn ($record) => match($record->latestStatusHistory?->status?->name) {
-                                    'Disponible' => 'success',
-                                    'En Uso' => 'warning',
-                                    'En Mantenimiento' => 'info',
-                                    'Dañada' => 'danger',
-                                    'Fuera de Servicio' => 'gray',
-                                    default => 'gray',
-                                })
-                    ->icon(fn ($record) => match($record->latestStatusHistory?->status?->name) {
-                                    'Disponible' => 'heroicon-o-check-circle',
-                                    'En Uso' => 'heroicon-o-clock',
-                                    'En Mantenimiento' => 'heroicon-o-wrench',
-                                    'Dañada' => 'heroicon-o-exclamation-triangle',
-                                    'Fuera de Servicio' => 'heroicon-o-x-circle',
-                                    default => 'heroicon-o-question-mark-circle',
-                                }),
+                    ->color(fn($record) => match ($record->latestStatusHistory?->status?->name) {
+                        'Disponible' => 'success',
+                        'En Uso' => 'warning',
+                        'En Mantenimiento' => 'info',
+                        'Dañada' => 'danger',
+                        'Fuera de Servicio' => 'gray',
+                        default => 'gray',
+                    })
+                    ->icon(fn($record) => match ($record->latestStatusHistory?->status?->name) {
+                        'Disponible' => 'heroicon-o-check-circle',
+                        'En Uso' => 'heroicon-o-clock',
+                        'En Mantenimiento' => 'heroicon-o-wrench',
+                        'Dañada' => 'heroicon-o-exclamation-triangle',
+                        'Fuera de Servicio' => 'heroicon-o-x-circle',
+                        default => 'heroicon-o-question-mark-circle',
+                    }),
 
                 TextColumn::make('latestStatusHistory.created_at')
                     ->label('Último Cambio de Estado')
@@ -108,10 +123,10 @@ class ToolsTable
                     ->label('Estado')
                     ->preload()
                     ->searchable()
-                    ->query(fn ($query, $data) => (
+                    ->query(fn($query, $data) => (
                         isset($data['value']) && $data['value'] !== ''
-                            ? $query->whereHas('latestStatusHistory.status', fn ($q) => $q->where('id', $data['value']))
-                            : $query
+                        ? $query->whereHas('latestStatusHistory.status', fn($q) => $q->where('id', $data['value']))
+                        : $query
                     ))
                     ->options(
                         ToolStatusHistory::select('status_id')
@@ -125,10 +140,17 @@ class ToolsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                AssignToolAction::make(),
                 RelationManagerAction::make('statusHistories')
                     ->label('Historial de Estados')
                     ->icon('heroicon-o-archive-box')
                     ->relationManager(StatusHistoriesRelationManager::class),
+                RelationManagerAction::make('assignments')
+                    ->label('Ver Historial de Asignaciones')
+                    ->icon('heroicon-o-clock')
+                    ->relationManager(AssignmentsRelationManager::class),
+
+
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
