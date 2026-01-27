@@ -24,6 +24,8 @@ class ToolForm
                             ->label('Imágenes')
                             ->image()
                             ->multiple()
+                            ->optimize('webp')
+                            ->resize(50)
                             ->directory('tools'),
                 Select::make('type_id')
                     ->label('Tipo de Herramienta')

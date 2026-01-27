@@ -10,6 +10,7 @@
         "al-saloul/filament-image-gallery": "^2.1",
         "barryvdh/laravel-dompdf": "^3.1",
         "bezhansalleh/filament-shield": "^4.0",
+        "danihidayatx/image-optimizer": "^2.0",
         "devonab/filament-easy-footer": "^2.0",
         "filament/filament": "^4.0",
         "guava/filament-modal-relation-managers": "^2.0",

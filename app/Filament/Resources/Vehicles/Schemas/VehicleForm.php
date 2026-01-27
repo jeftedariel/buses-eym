@@ -96,6 +96,8 @@ class VehicleForm
                     ->label('Imágenes')
                     ->image()
                     ->multiple()
+                    ->optimize('webp')
+                    ->resize(50)
                     ->directory('vehicles'),
                 Textarea::make('description')
                     ->columnSpanFull(),
