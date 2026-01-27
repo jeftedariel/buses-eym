@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Vehicle;
@@ -15,7 +14,7 @@ class VehiclePdfController extends Controller
             'vehicle' => $vehicle,
         ]);
 
-        $filename = 'vehiculo_detallado_' . ($vehicle->license_plate ?? $vehicle->id) . '.pdf';
+        $filename = 'vehiculo_detallado_' . $this->sanitizeFilename($vehicle->license_plate ?? $vehicle->id) . '.pdf';
 
         return $pdf->download($filename);
     }
@@ -28,8 +27,23 @@ class VehiclePdfController extends Controller
             'vehicle' => $vehicle,
         ]);
 
-        $filename = 'vehiculo_' . ($vehicle->model->name ?? $vehicle->id) . '.pdf';
+        $filename = 'vehiculo_' . $this->sanitizeFilename($vehicle->model->name ?? $vehicle->id) . '.pdf';
 
         return $pdf->download($filename);
+    }
+
+    /**
+     * Sanitize filename by removing invalid characters
+     */
+    private function sanitizeFilename(string $filename): string
+    {
+        // Remove / and \ characters and other problematic characters
+        $filename = str_replace(['/', '\\', ':', '*', '?', '"', '<', '>', '|'], '_', $filename);
+
+        // Remove multiple consecutive underscores
+        $filename = preg_replace('/_+/', '_', $filename);
+
+        // Trim underscores from start and end
+        return trim($filename, '_');
     }
 }

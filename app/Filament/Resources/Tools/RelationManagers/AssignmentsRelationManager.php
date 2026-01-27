@@ -55,6 +55,8 @@ class AssignmentsRelationManager extends RelationManager
                 Tables\Filters\Filter::make('active')
                     ->label('Solo Activas')
                     ->query(fn ($query) => $query->whereNull('returned_at')),
-            ]);
+            ])
+            ->headerActions([]);
     }
+
 }

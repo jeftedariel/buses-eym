@@ -4,12 +4,14 @@ namespace App\Filament\Resources\Tools\Actions;
 
 use App\Models\Employee;
 use App\Models\ToolAssignment;
+use App\Models\User;
 use Filament\Actions\Action as ActionsAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Auth;
 
 class AssignToolAction extends ActionsAction
 {
@@ -27,6 +29,7 @@ class AssignToolAction extends ActionsAction
             ->color(fn ($record) => $record->isAssigned() ? 'success' : 'primary')
             ->modalHeading(fn ($record) => $record->isAssigned() ? 'Marcar Devolución de Herramienta' : 'Asignar Herramienta a Empleado')
             ->modalSubmitActionLabel(fn ($record) => $record->isAssigned() ? 'Registrar Devolución' : 'Asignar Herramienta')
+
             ->form(function ($record) {
                 // Si está asignada, mostrar formulario de devolución
                 if ($record->isAssigned()) {
@@ -61,7 +64,6 @@ class AssignToolAction extends ActionsAction
                             \Filament\Forms\Components\TextInput::make('name')
                                 ->label('Nombre del Empleado')
                                 ->required(),
-                            // Agrega más campos según tu modelo Employee
                         ])
                         ->createOptionUsing(function (array $data): int {
                             return Employee::create($data)->getKey();

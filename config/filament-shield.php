@@ -23,7 +23,7 @@ return [
             'pages' => true,
             'widgets' => true,
             'resources' => true,
-            'custom_permissions' => false,
+            'custom_permissions' => true,
         ],
     ],
 
@@ -227,8 +227,13 @@ return [
     | when editing roles in your application.
     |
     */
-
-    'custom_permissions' => [],
+'custom_permissions' => [
+    'Assign:Tool' => 'Assign Tool',
+    'Return:Tool' => 'Return Tool',
+    'ChangeStatus:Tool' => 'Change Status Tool',
+    'ViewAssignmentHistory:Tool' => 'View Assignment History Tool',
+    'ViewStatusHistory:Tool' => 'View Status History Tool',
+],
 
     /*
     |--------------------------------------------------------------------------

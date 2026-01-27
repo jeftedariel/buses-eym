@@ -7,6 +7,7 @@ use App\Filament\Resources\Tools\RelationManagers\AssignmentsRelationManager;
 use App\Filament\Resources\Tools\RelationManagers\StatusHistoriesRelationManager;
 use App\Models\ToolStatusHistory;
 use Dom\Text;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -16,6 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
+use PhpParser\Node\Stmt\Label;
 
 class ToolsTable
 {
@@ -137,21 +139,26 @@ class ToolsTable
                             ->toArray()
                     ),
             ])
-            ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                AssignToolAction::make(),
-                RelationManagerAction::make('statusHistories')
-                    ->label('Historial de Estados')
-                    ->icon('heroicon-o-archive-box')
-                    ->relationManager(StatusHistoriesRelationManager::class),
-                RelationManagerAction::make('assignments')
-                    ->label('Ver Historial de Asignaciones')
-                    ->icon('heroicon-o-clock')
-                    ->relationManager(AssignmentsRelationManager::class),
+            // En recordActions, actualiza las acciones:
+->recordActions([
+    ViewAction::make(),
+
+    EditAction::make(),
+    ActionGroup::make([
+        AssignToolAction::make(),
+        RelationManagerAction::make('statusHistories')
+            ->label('Historial de Estados')
+            ->icon('heroicon-o-archive-box')
+            ->relationManager(StatusHistoriesRelationManager::class),
+            #->visible(fn ($record) => auth()->user()->can('viewStatusHistory', $record)),
 
 
-            ])
+        RelationManagerAction::make('assignments')
+            ->label('Ver Historial de Asignaciones')
+            ->icon('heroicon-o-clock')
+            ->relationManager(AssignmentsRelationManager::class),
+    ])->label('Acciones'),
+])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
