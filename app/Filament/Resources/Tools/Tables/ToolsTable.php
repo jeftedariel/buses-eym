@@ -6,6 +6,7 @@ use App\Filament\Resources\Tools\Actions\AssignToolAction;
 use App\Filament\Resources\Tools\RelationManagers\AssignmentsRelationManager;
 use App\Filament\Resources\Tools\RelationManagers\StatusHistoriesRelationManager;
 use App\Models\ToolStatusHistory;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -58,11 +59,12 @@ class ToolsTable
                     ->label('Asignada a')
                     ->default('Disponible')
                     ->badge()
-                    ->color(fn ($record) => $record->isAssigned() ? 'info' : 'success')
-                    ->icon(fn ($record) => $record->isAssigned() ? 'heroicon-o-user' : 'heroicon-o-check-circle')
-                    ->description(fn ($record) => $record->isAssigned()
-                        ? 'Desde: ' . $record->currentAssignment->assigned_at->format('d/m/Y')
-                        : null
+                    ->color(fn($record) => $record->isAssigned() ? 'info' : 'success')
+                    ->icon(fn($record) => $record->isAssigned() ? 'heroicon-o-user' : 'heroicon-o-check-circle')
+                    ->description(
+                        fn($record) => $record->isAssigned()
+                            ? 'Desde: ' . $record->currentAssignment->assigned_at->format('d/m/Y')
+                            : null
                     ),
 
                 TextColumn::make('latestStatusHistory.status.name')
@@ -71,7 +73,7 @@ class ToolsTable
                     ->searchable()
                     ->sortable()
                     ->default('-')
-                    ->color(fn ($record) => match($record->latestStatusHistory?->status?->name) {
+                    ->color(fn($record) => match ($record->latestStatusHistory?->status?->name) {
                         'Disponible' => 'success',
                         'En Uso' => 'warning',
                         'En Mantenimiento' => 'info',
@@ -79,7 +81,7 @@ class ToolsTable
                         'Fuera de Servicio' => 'gray',
                         default => 'gray',
                     })
-                    ->icon(fn ($record) => match($record->latestStatusHistory?->status?->name) {
+                    ->icon(fn($record) => match ($record->latestStatusHistory?->status?->name) {
                         'Disponible' => 'heroicon-o-check-circle',
                         'En Uso' => 'heroicon-o-clock',
                         'En Mantenimiento' => 'heroicon-o-wrench',
@@ -130,10 +132,10 @@ class ToolsTable
                     ->label('Estado')
                     ->preload()
                     ->searchable()
-                    ->query(fn ($query, $data) => (
+                    ->query(fn($query, $data) => (
                         isset($data['value']) && $data['value'] !== ''
-                            ? $query->whereHas('latestStatusHistory.status', fn ($q) => $q->where('id', $data['value']))
-                            : $query
+                        ? $query->whereHas('latestStatusHistory.status', fn($q) => $q->where('id', $data['value']))
+                        : $query
                     ))
                     ->options(
                         ToolStatusHistory::select('status_id')
@@ -164,22 +166,24 @@ class ToolsTable
 
                 EditAction::make(),
 
-                // Acción de asignación/devolución
-                AssignToolAction::make(),
+                ActionGroup::make([
+                        AssignToolAction::make(),
+                        RelationManagerAction::make('statusHistories')
+                            ->label('Historial de Estados')
+                            ->icon('heroicon-o-archive-box')
+                            ->relationManager(StatusHistoriesRelationManager::class)
+                            ->visible(fn() => Gate::forUser(Filament::auth()->user())->check('ViewStatusHistory:Tool')),
+                        RelationManagerAction::make('assignments')
+                            ->label('Ver Historial de Asignaciones')
+                            ->icon('heroicon-o-clock')
+                            ->relationManager(AssignmentsRelationManager::class)
+                            ->visible(fn() => Gate::forUser(Filament::auth()->user())->check('ViewAssignmentHistory:Tool')),
+                ])
+                    ->label('Acciones'),
 
-                // Historial de estados - Usa el nombre del permiso de Spatie SIN el $record
-                RelationManagerAction::make('statusHistories')
-                    ->label('Historial de Estados')
-                    ->icon('heroicon-o-archive-box')
-                    ->relationManager(StatusHistoriesRelationManager::class)
-                    ->visible(fn () => Gate::forUser(Filament::auth()->user())->check('ViewStatusHistory:Tool')),
 
-                // Historial de asignaciones - Usa el nombre del permiso de Spatie SIN el $record
-                RelationManagerAction::make('assignments')
-                    ->label('Ver Historial de Asignaciones')
-                    ->icon('heroicon-o-clock')
-                    ->relationManager(AssignmentsRelationManager::class)
-                    ->visible(fn () => Gate::forUser(Filament::auth()->user())->check('ViewAssignmentHistory:Tool')),
+
+
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
