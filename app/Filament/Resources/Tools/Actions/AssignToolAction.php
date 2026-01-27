@@ -4,16 +4,15 @@ namespace App\Filament\Resources\Tools\Actions;
 
 use App\Models\Employee;
 use App\Models\ToolAssignment;
-use App\Models\User;
-use Filament\Actions\Action as ActionsAction;
+use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
-use Filament\Tables\Actions\Action;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
-class AssignToolAction extends ActionsAction
+class AssignToolAction extends Action
 {
     public static function getDefaultName(): ?string
     {
@@ -29,7 +28,14 @@ class AssignToolAction extends ActionsAction
             ->color(fn ($record) => $record->isAssigned() ? 'success' : 'primary')
             ->modalHeading(fn ($record) => $record->isAssigned() ? 'Marcar Devolución de Herramienta' : 'Asignar Herramienta a Empleado')
             ->modalSubmitActionLabel(fn ($record) => $record->isAssigned() ? 'Registrar Devolución' : 'Asignar Herramienta')
-
+            // Usar Gate con el nombre del permiso de Spatie directamente
+            ->visible(function ($record): bool {
+                $user = Filament::auth()->user();
+                if ($record->isAssigned()) {
+                    return Gate::forUser($user)->check('Return:Tool');
+                }
+                return Gate::forUser($user)->check('Assign:Tool');
+            })
             ->form(function ($record) {
                 // Si está asignada, mostrar formulario de devolución
                 if ($record->isAssigned()) {

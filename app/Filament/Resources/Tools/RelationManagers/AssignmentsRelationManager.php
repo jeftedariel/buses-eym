@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Tools\RelationManagers;
 
+use Filament\Facades\Filament;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Gate;
 
 class AssignmentsRelationManager extends RelationManager
 {
@@ -55,8 +57,11 @@ class AssignmentsRelationManager extends RelationManager
                 Tables\Filters\Filter::make('active')
                     ->label('Solo Activas')
                     ->query(fn ($query) => $query->whereNull('returned_at')),
-            ])
-            ->headerActions([]);
+            ]);
     }
 
+    public static function canViewForRecord(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): bool
+    {
+        return Gate::forUser(Filament::auth()->user())->check('ViewAssignmentHistory:Tool');
+    }
 }
