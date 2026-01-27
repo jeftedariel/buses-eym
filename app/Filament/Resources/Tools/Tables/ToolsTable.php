@@ -179,7 +179,10 @@ class ToolsTable
                             ->relationManager(AssignmentsRelationManager::class)
                             ->visible(fn() => Gate::forUser(Filament::auth()->user())->check('ViewAssignmentHistory:Tool')),
                 ])
-                    ->label('Acciones'),
+                    ->label('Acciones')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->color('primary')
+                    ->button(),
 
 
 
