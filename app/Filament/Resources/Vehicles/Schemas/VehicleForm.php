@@ -95,6 +95,7 @@ class VehicleForm
                 FileUpload::make('images')
                     ->label('Imágenes')
                     ->image()
+                    ->imageEditor()
                     ->multiple()
                     ->optimize('webp')
                     ->resize(50)

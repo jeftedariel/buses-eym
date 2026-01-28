@@ -24,6 +24,7 @@ class ToolForm
                             ->label('Imágenes')
                             ->image()
                             ->multiple()
+                            ->imageEditor()
                             ->optimize('webp')
                             ->resize(50)
                             ->directory('tools'),
