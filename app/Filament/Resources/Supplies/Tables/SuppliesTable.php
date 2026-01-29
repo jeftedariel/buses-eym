@@ -27,25 +27,33 @@ class SuppliesTable
                 TextColumn::make('code')
                     ->label('Cód')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 ImageColumn::make('images')
                     ->label('Img')
                     ->imageHeight(35)
                     ->stacked()
                     ->limit(3)
-                    ->imageGallery(),
+                    ->imageGallery()
+                    ->toggleable(),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
+
+                    ->toggleable()
                     ->label('Nombre'),
                 TextColumn::make('description')
                     ->label('Descripción')
+
+                    ->toggleable()
                     ->searchable(),
                 TextColumn::make('quantity')
                     ->label('Cantidad')
                     ->numeric()
                     ->sortable()
                     ->badge()
+
+                    ->toggleable()
                     ->color(fn(int $state): string => match (true) {
                         $state === 0 => 'danger',
                         $state < 10 => 'warning',
@@ -55,10 +63,13 @@ class SuppliesTable
                 TextColumn::make('manufacturer.name')
                     ->label('Fabricante')
                     ->searchable()
+
+                    ->toggleable()
                     ->sortable(),
                 TextColumn::make('category.name')
                     ->label('Categoría')
                     ->searchable()
+                    ->toggleable()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Creado el')

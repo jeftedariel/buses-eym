@@ -30,30 +30,35 @@ class ToolsTable
                     ->imageHeight(35)
                     ->stacked()
                     ->limit(3)
-                    ->imageGallery(),
+                    ->imageGallery()
+                    ->toggleable(),
 
                 TextColumn::make('code')
                     ->label('Código')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('description')
                     ->label('Descripción')
                     ->searchable()
-                    ->limit(50),
+                    ->limit(50)
+                    ->toggleable(),
 
                 TextColumn::make('type.name')
                     ->label('Tipo de Herramienta')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('type.manufacturer.name')
                     ->label('Fabricante')
-                    ->sortable(),
-
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('type.category.name')
                     ->label('Categoría')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('currentAssignment.employee.name')
                     ->label('Asignada a')
@@ -65,7 +70,8 @@ class ToolsTable
                         fn($record) => $record->isAssigned()
                             ? 'Desde: ' . $record->currentAssignment->assigned_at->format('d/m/Y')
                             : null
-                    ),
+                    )
+                    ->toggleable(),
 
                 TextColumn::make('latestStatusHistory.status.name')
                     ->label('Estado Actual')
@@ -88,7 +94,8 @@ class ToolsTable
                         'Dañada' => 'heroicon-o-exclamation-triangle',
                         'Fuera de Servicio' => 'heroicon-o-x-circle',
                         default => 'heroicon-o-question-mark-circle',
-                    }),
+                    })
+                    ->toggleable(),
 
                 TextColumn::make('latestStatusHistory.created_at')
                     ->label('Último Cambio de Estado')

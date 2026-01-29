@@ -33,43 +33,54 @@ class VehiclesTable
                     ->circular()
                     ->stacked()
                     ->limit(3)
-                    ->imageGallery(),
+                    ->imageGallery()
+                    ->toggleable(),
                 TextColumn::make('model.manufacturer.name')
                     ->label('Fabricante')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('model.type.name')
                     ->label('Tipo')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('model.name')
                     ->label('Modelo')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('model.year')
                     ->label('Año')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('capacity')
                     ->label('Capacidad Asientos')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('transmission')
                     ->label('Transmisión')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('motor_displacement')
                     ->label('Motor (L)')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('color')
                     ->label('Color')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('license_plate')
                     ->label('Placa')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                  TextColumn::make('latestStatusHistory.status.name')
                     ->label('Estado Actual')
                     ->badge()
@@ -91,7 +102,8 @@ class VehiclesTable
                                     'Dañada' => 'heroicon-o-exclamation-triangle',
                                     'Fuera de Servicio' => 'heroicon-o-x-circle',
                                     default => 'heroicon-o-question-mark-circle',
-                                }),
+                                })
+                    ->toggleable(),
 
                 TextColumn::make('latestStatusHistory.created_at')
                     ->label('Último Cambio de Estado')
