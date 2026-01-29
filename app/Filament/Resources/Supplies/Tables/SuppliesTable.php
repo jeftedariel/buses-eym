@@ -80,7 +80,7 @@ class SuppliesTable
                     ->relationManager(WithdrawalHistoriesRelationManager::class)
                     ->icon('heroicon-o-archive-box'),
                 Action::make('increase')
-                    ->label('Ingresar Insumo')
+                    ->label('Agregar')
                     ->icon('heroicon-m-plus-circle')
                     ->color('success')
                     ->requiresConfirmation()
@@ -109,7 +109,7 @@ class SuppliesTable
                             ->send();
                     }),
                 Action::make('decrease')
-                    ->label('Retirar Existencias')
+                    ->label('Retirar')
                     ->icon('heroicon-m-minus-circle')
                     ->color('danger')
                     ->requiresConfirmation()
