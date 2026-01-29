@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use Spatie\Activitylog\Models\Activity;
 use App\Policies\ActivityPolicy;
 use App\Policies\ToolPolicy;
+use Filament\Support\Facades\FilamentTimezone;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        FilamentTimezone::set('America/Costa_Rica');
+
         Gate::policy(Activity::class, ActivityPolicy::class);
 
         Gate::define('assign', [ToolPolicy::class, 'assign']);
