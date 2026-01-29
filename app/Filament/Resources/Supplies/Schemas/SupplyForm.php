@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Supplies\Schemas;
 
+use Dom\Text;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -12,6 +14,9 @@ class SupplyForm
     {
         return $schema
             ->components([
+                TextInput::make('code')
+                    ->label('Código'),
+
                 TextInput::make('name')
                     ->required()
                     ->label('Nombre'),
@@ -46,6 +51,14 @@ class SupplyForm
                         TextInput::make('description')
                             ->label('Descripción'),
                     ]),
+                FileUpload::make('images')
+                            ->label('Imágenes')
+                            ->image()
+                            ->multiple()
+                            ->imageEditor()
+                            ->optimize('webp')
+                            ->resize(50)
+                            ->directory('supplies'),
             ]);
     }
 }

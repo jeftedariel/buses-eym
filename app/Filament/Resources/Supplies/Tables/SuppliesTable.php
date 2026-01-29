@@ -14,6 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 
@@ -23,6 +24,16 @@ class SuppliesTable
     {
         return $table
             ->columns([
+                TextColumn::make('code')
+                    ->label('Cód')
+                    ->searchable()
+                    ->sortable(),
+                ImageColumn::make('images')
+                    ->label('Img')
+                    ->imageHeight(35)
+                    ->stacked()
+                    ->limit(3)
+                    ->imageGallery(),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()

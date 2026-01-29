@@ -12,6 +12,8 @@ class Supply extends Model
 
     protected $fillable = [
         'name',
+        'code',
+        'images',
         'description',
         'quantity',
         'manufacturer_id',
@@ -20,6 +22,7 @@ class Supply extends Model
 
     protected $casts = [
         'quantity' => 'integer',
+        'images' => 'array',
     ];
 
     public function manufacturer(): BelongsTo

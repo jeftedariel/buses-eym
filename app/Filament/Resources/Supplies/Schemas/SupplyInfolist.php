@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Supplies\Schemas;
 
+use Alsaloul\ImageGallery\Tables\Columns\ImageGalleryColumn;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -13,11 +14,31 @@ class SupplyInfolist
     {
         return $schema
             ->components([
+
+                Section::make('Galería de Imágenes')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
+                        ImageGalleryColumn::make('images')
+                            ->disk(config('filesystems.default'))
+                            ->thumbWidth(128)
+                            ->thumbHeight(128)
+                            ->imageGap('gap-4'),
+                    ])
+                    ->collapsible()
+                    ->collapsed(fn ($record) => empty($record->images)),
                 // Sección Principal - Información del Suministro
                 Section::make('Información del Suministro')
                     ->description('Detalles principales del suministro')
                     ->icon('heroicon-o-cube')
                     ->schema([
+                        TextEntry::make('code')
+                            ->label('Código')
+                            ->weight('bold')
+                            ->color('primary')
+                            ->icon('heroicon-m-hashtag')
+                            ->copyable()
+                            ->copyMessage('Código copiado')
+                            ->copyMessageDuration(1500),
                         TextEntry::make('name')
                             ->label('Nombre')
                             ->weight('bold')
