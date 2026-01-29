@@ -79,14 +79,44 @@ class SuppliesTable
                     ->label('Historial de Retiros')
                     ->relationManager(WithdrawalHistoriesRelationManager::class)
                     ->icon('heroicon-o-archive-box'),
+                Action::make('increase')
+                    ->label('Ingresar Insumo')
+                    ->icon('heroicon-m-plus-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Agregar Existencias')
+                    ->modalDescription(fn($record) => "Stock actual: {$record->quantity} unidades")
+                    ->modalIcon('heroicon-o-plus-circle')
+                    ->button()
+                    ->form([
+                        TextInput::make('quantity_to_increase')
+                            ->label('Cantidad a agregar')
+                            ->numeric()
+                            ->required()
+                            ->minValue(1),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $newQuantity = $record->quantity + $data['quantity_to_increase'];
+
+                        $record->update([
+                            'quantity' => $newQuantity,
+                        ]);
+
+                        Notification::make()
+                            ->title('Existencias actualizadas')
+                            ->body("Se agregaron {$data['quantity_to_increase']} unidades. Stock actual: {$newQuantity}")
+                            ->success()
+                            ->send();
+                    }),
                 Action::make('decrease')
                     ->label('Retirar Existencias')
                     ->icon('heroicon-m-minus-circle')
-                    ->color('warning')
+                    ->color('danger')
                     ->requiresConfirmation()
                     ->modalHeading('Retirar Existencias')
                     ->modalDescription(fn($record) => "Stock actual: {$record->quantity} unidades")
                     ->modalIcon('heroicon-o-minus-circle')
+                    ->button()
                     ->form([
 
                         TextInput::make('quantity_to_decrease')
