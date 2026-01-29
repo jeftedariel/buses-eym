@@ -31,4 +31,10 @@ class Supply extends Model
     {
         return $this->belongsTo(SupplyCategory::class);
     }
+
+    public function withdrawalHistories()
+    {
+        return $this->hasMany(SupplyWithdrawalHistory::class);
+    }
+
 }

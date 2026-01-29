@@ -6,6 +6,7 @@ use App\Filament\Resources\Supplies\Pages\CreateSupply;
 use App\Filament\Resources\Supplies\Pages\EditSupply;
 use App\Filament\Resources\Supplies\Pages\ListSupplies;
 use App\Filament\Resources\Supplies\Pages\ViewSupply;
+use App\Filament\Resources\Supplies\RelationManagers\WithdrawalHistoriesRelationManager;
 use App\Filament\Resources\Supplies\Schemas\SupplyForm;
 use App\Filament\Resources\Supplies\Schemas\SupplyInfolist;
 use App\Filament\Resources\Supplies\Tables\SuppliesTable;
@@ -47,7 +48,7 @@ class SupplyResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            WithdrawalHistoriesRelationManager::class,
         ];
     }
 

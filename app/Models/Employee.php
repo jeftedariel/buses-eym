@@ -27,4 +27,9 @@ class Employee extends Model
     {
         return $this->activeToolAssignments()->with('tool');
     }
+
+    public function supplyWithdrawalHistories(): HasMany
+    {
+        return $this->hasMany(SupplyWithdrawalHistory::class);
+    }
 }
