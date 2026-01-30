@@ -2,7 +2,8 @@
 
 namespace App\Filament\Resources\Supplies\Schemas;
 
-use Alsaloul\ImageGallery\Tables\Columns\ImageGalleryColumn;
+use Alsaloul\ImageGallery\Infolists\Entries\ImageGalleryEntry;
+
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -18,7 +19,7 @@ class SupplyInfolist
                 Section::make('Galería de Imágenes')
                     ->icon('heroicon-o-photo')
                     ->schema([
-                        ImageGalleryColumn::make('images')
+                        ImageGalleryEntry::make('images')
                             ->disk(config('filesystems.default'))
                             ->thumbWidth(128)
                             ->thumbHeight(128)
