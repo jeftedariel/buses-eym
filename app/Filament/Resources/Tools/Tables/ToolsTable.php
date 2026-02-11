@@ -192,7 +192,7 @@ class ToolsTable
                 ])->hiddenLabel()
                 ->button()
                 ->color('info')
-                ->icon(Heroicon::Cog)
+                ->icon(Heroicon::Wrench)
                 ])->recordActionsPosition(RecordActionsPosition::BeforeColumns)
 
             ->toolbarActions([
