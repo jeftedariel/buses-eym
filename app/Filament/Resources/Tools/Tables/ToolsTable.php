@@ -12,8 +12,10 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Facades\Filament;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
@@ -169,11 +171,12 @@ class ToolsTable
                     }),
             ])
             ->recordActions([
+
+                ActionGroup::make([
                 ViewAction::make(),
 
                 EditAction::make(),
 
-                ActionGroup::make([
                         AssignToolAction::make(),
                         RelationManagerAction::make('statusHistories')
                             ->label('Historial de Estados')
@@ -185,16 +188,13 @@ class ToolsTable
                             ->icon('heroicon-o-clock')
                             ->relationManager(AssignmentsRelationManager::class)
                             ->visible(fn() => Gate::forUser(Filament::auth()->user())->check('ViewAssignmentHistory:Tool')),
-                ])
-                    ->label('Acciones')
-                    ->icon('heroicon-m-ellipsis-vertical')
-                    ->color('primary')
-                    ->button(),
 
+                ])->hiddenLabel()
+                ->button()
+                ->color('info')
+                ->icon(Heroicon::Cog)
+                ])->recordActionsPosition(RecordActionsPosition::BeforeColumns)
 
-
-
-            ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

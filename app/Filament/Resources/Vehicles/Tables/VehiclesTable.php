@@ -13,9 +13,11 @@ use Filament\Actions\ViewAction;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Forms\Components\Select;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -233,6 +235,7 @@ class VehiclesTable
             ])
             ->defaultSort('updated_at', 'desc')
             ->recordActions([
+                ActionGroup::make([
                 ViewAction::make(),
                 EditAction::make(),
                 RelationManagerAction::make('statusHistories')
@@ -256,10 +259,14 @@ class VehiclesTable
 
     ->label('Exportar')
     ->icon('heroicon-m-ellipsis-vertical')
-    ->color('primary')
+    ->color('info')
     ->button()
-
-            ])
+                ])
+                ->hiddenLabel()
+                ->button()
+                ->color('info')
+                ->icon(Heroicon::Cog)
+            ])->recordActionsPosition(RecordActionsPosition::BeforeColumns)
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

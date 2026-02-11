@@ -9,12 +9,15 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 
@@ -95,6 +98,7 @@ class SuppliesTable
                     ->searchable(),
             ])
             ->recordActions([
+                ActionGroup::make([
                 ViewAction::make(),
                 EditAction::make(),
                 RelationManagerAction::make('withdrawalHistories')
@@ -209,7 +213,12 @@ class SuppliesTable
                             ->send();
                     })
                     ->visible(fn($record) => $record->quantity > 0),
-            ])
+
+            ])->hiddenLabel()
+                ->button()
+                ->color('info')
+                ->icon(Heroicon::Cog)
+            ])->recordActionsPosition(RecordActionsPosition::BeforeColumns)
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
