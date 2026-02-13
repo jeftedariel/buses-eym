@@ -77,6 +77,6 @@ class SupplyWithdrawalHistoriesTable
                     DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('updated_at', 'desc');
     }
 }
