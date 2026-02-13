@@ -27,11 +27,6 @@ class SuppliesTable
     {
         return $table
             ->columns([
-                TextColumn::make('code')
-                    ->label('Cód')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(),
                 ImageColumn::make('images')
                     ->label('Img')
                     ->imageHeight(35)
@@ -39,20 +34,28 @@ class SuppliesTable
                     ->limit(3)
                     ->imageGallery()
                     ->toggleable(),
+                TextColumn::make('code')
+                    ->label('Cód')
+                    ->searchable()
+                    ->copyable()
+                    ->icon(Heroicon::Tag)
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
-
+                    ->copyable()
+                    ->icon(Heroicon::ArchiveBox)
                     ->toggleable()
                     ->label('Nombre'),
                 TextColumn::make('description')
                     ->label('Descripción')
-
                     ->toggleable()
                     ->searchable(),
                 TextColumn::make('quantity')
                     ->label('Cantidad')
                     ->numeric()
+                    ->icon(Heroicon::Cube)
                     ->sortable()
                     ->badge()
 
@@ -66,14 +69,18 @@ class SuppliesTable
                 TextColumn::make('manufacturer.name')
                     ->label('Fabricante')
                     ->searchable()
-
+                    ->copyable()
+                    ->icon(Heroicon::BuildingOffice2)
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('category.name')
                     ->label('Categoría')
                     ->searchable()
                     ->toggleable()
+                    ->copyable()
+                    ->icon(Heroicon::Tag)
                     ->sortable(),
+
                 TextColumn::make('created_at')
                     ->label('Creado el')
                     ->dateTime()
@@ -104,15 +111,15 @@ class SuppliesTable
                 RelationManagerAction::make('withdrawalHistories')
                     ->label('Historial de Retiros')
                     ->relationManager(WithdrawalHistoriesRelationManager::class)
-                    ->icon('heroicon-o-archive-box'),
+                    ->icon(Heroicon::Clock),
                 Action::make('increase')
                     ->label('Agregar')
-                    ->icon('heroicon-m-plus-circle')
+                    ->icon(Heroicon::PlusCircle)
                     ->color('success')
                     ->requiresConfirmation()
                     ->modalHeading('Agregar Existencias')
                     ->modalDescription(fn($record) => "Stock actual: {$record->quantity} unidades")
-                    ->modalIcon('heroicon-o-plus-circle')
+                    ->modalIcon(Heroicon::PlusCircle)
                     ->button()
                     ->form([
                         TextInput::make('quantity_to_increase')
@@ -136,12 +143,12 @@ class SuppliesTable
                     }),
                 Action::make('decrease')
                     ->label('Retirar')
-                    ->icon('heroicon-m-minus-circle')
+                    ->icon(Heroicon::MinusCircle)
                     ->color('danger')
                     ->requiresConfirmation()
                     ->modalHeading('Retirar Existencias')
                     ->modalDescription(fn($record) => "Stock actual: {$record->quantity} unidades")
-                    ->modalIcon('heroicon-o-minus-circle')
+                    ->modalIcon(Heroicon::MinusCircle)
                     ->button()
                     ->form([
 

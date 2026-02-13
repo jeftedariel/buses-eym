@@ -5,6 +5,7 @@ namespace App\Filament\Resources\SupplyWithdrawalHistories\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -29,18 +30,18 @@ class SupplyWithdrawalHistoriesTable
                     ->searchable()
                     ->sortable()
                     ->copyable()
-                    ->icon('heroicon-o-tag')
+                    ->icon(Heroicon::Tag)
                     ->toggleable(),
                 TextColumn::make('supply.name')
                     ->label('Suplemento')
-                    ->icon('heroicon-o-archive-box')
+                    ->icon(Heroicon::ArchiveBox)
                     ->numeric()
                     ->copyable()
                     ->sortable(),
                 TextColumn::make('employee.name')
                     ->label('Empleado')
                     ->numeric()
-                    ->icon('heroicon-o-user')
+                    ->icon(Heroicon::User)
                     ->sortable(),
                 TextColumn::make('notes')
                     ->label('Notas')
@@ -48,6 +49,7 @@ class SupplyWithdrawalHistoriesTable
                 TextColumn::make('quantity')
                     ->label('Cantidad')
                     ->numeric()
+                    ->icon(Heroicon::Cube)
                     ->badge()
                     ->color('primary')
                     ->sortable(),

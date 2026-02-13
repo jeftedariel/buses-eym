@@ -39,6 +39,8 @@ class ToolsTable
                     ->label('Código')
                     ->searchable()
                     ->sortable()
+                    ->copyable()
+                    ->icon(Heroicon::Tag)
                     ->toggleable(),
 
                 TextColumn::make('description')
@@ -51,21 +53,29 @@ class ToolsTable
                     ->label('Tipo de Herramienta')
                     ->searchable()
                     ->sortable()
+                    ->copyable()
+                    ->icon(Heroicon::Wrench)
                     ->toggleable(),
 
                 TextColumn::make('type.manufacturer.name')
                     ->label('Fabricante')
                     ->sortable()
+                    ->copyable()
+                    ->icon(Heroicon::BuildingOffice)
                     ->toggleable(),
                 TextColumn::make('type.category.name')
                     ->label('Categoría')
                     ->sortable()
+                    ->copyable()
+                    ->icon(Heroicon::Tag)
                     ->toggleable(),
 
                 TextColumn::make('currentAssignment.employee.name')
                     ->label('Asignada a')
                     ->default('Disponible')
                     ->badge()
+                    ->copyable()
+                    ->icon(Heroicon::User)
                     ->color(fn($record) => $record->isAssigned() ? 'info' : 'success')
                     ->icon(fn($record) => $record->isAssigned() ? 'heroicon-o-user' : 'heroicon-o-check-circle')
                     ->description(
@@ -79,6 +89,7 @@ class ToolsTable
                     ->label('Estado Actual')
                     ->badge()
                     ->searchable()
+                    ->icon(Heroicon::InformationCircle)
                     ->sortable()
                     ->default('-')
                     ->color(fn($record) => match ($record->latestStatusHistory?->status?->name) {
@@ -102,6 +113,7 @@ class ToolsTable
                 TextColumn::make('latestStatusHistory.created_at')
                     ->label('Último Cambio de Estado')
                     ->dateTime('d/m/Y H:i')
+                    ->icon(Heroicon::Clock)
                     ->sortable()
                     ->since()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ToolAssignments\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -24,24 +25,24 @@ class ToolAssignmentsTable
                     ->toggleable(),
                 TextColumn::make('tool.code')
                     ->label('Codigo')
-                    ->icon('heroicon-o-tag')
+                    ->icon(Heroicon::Tag)
                     ->copyable()
                     ->searchable(),
                 TextColumn::make('employee.name')
                     ->label('Empleado')
-                    ->icon('heroicon-o-user')
+                    ->icon(Heroicon::User)
                     ->copyable()
                     ->searchable(),
                 TextColumn::make('assigned_at')
                     ->label('Retiró el')
-                    ->icon('heroicon-o-calendar')
+                    ->icon(Heroicon::Calendar)
                     ->badge('primary')
                     ->color('primary')
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('returned_at')
                     ->label('Regresó el')
-                    ->icon('heroicon-o-calendar')
+                    ->icon(Heroicon::Calendar)
                     ->badge('success')
                     ->color('success')
                     ->dateTime()
