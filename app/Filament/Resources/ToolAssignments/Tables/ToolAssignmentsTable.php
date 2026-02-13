@@ -15,7 +15,7 @@ class ToolAssignmentsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('images')
+                ImageColumn::make('tool.images')
                     ->label('Img')
                     ->imageHeight(35)
                     ->stacked()

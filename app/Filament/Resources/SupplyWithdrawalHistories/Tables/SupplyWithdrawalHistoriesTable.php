@@ -17,7 +17,7 @@ class SupplyWithdrawalHistoriesTable
     {
         return $table
             ->columns([
-                ImageColumn::make('images')
+                ImageColumn::make('supply.images')
                     ->label('Img')
                     ->imageHeight(35)
                     ->stacked()
