@@ -1,4 +1,7 @@
-FROM php:8.4-fpm-alpine AS base
+FROM php:8.4-fpm-alpine3.18 AS base
+
+# Ensure the base image packages are upgraded to the latest security-patched versions
+RUN apk update && apk upgrade --no-cache
 
 RUN apk add --no-cache \
     nginx \
@@ -34,8 +37,10 @@ RUN docker-php-ext-configure gd \
         pcntl \
         exif
 
-RUN pecl install redis \
-    && docker-php-ext-enable redis
+RUN apk add --no-cache autoconf g++ make \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apk del autoconf g++ make
 
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
