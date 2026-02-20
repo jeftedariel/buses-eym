@@ -1,7 +1,4 @@
-FROM php:8.4-fpm-alpine3.18 AS base
-
-# Ensure the base image packages are upgraded to the latest security-patched versions
-RUN apk update && apk upgrade --no-cache
+FROM php:8.4-fpm-alpine AS base
 
 RUN apk add --no-cache \
     nginx \
