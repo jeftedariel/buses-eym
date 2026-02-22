@@ -2,8 +2,6 @@ services:
   app:
     build:
       context: .
-    ports:
-      - "80:80"
     volumes:
       - .:/app
     depends_on:
