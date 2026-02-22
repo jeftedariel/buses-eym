@@ -13,4 +13,5 @@ exec php artisan octane:frankenphp \
     --host=0.0.0.0 \
     --port=${OCTANE_PORT:-80} \
     --workers=${OCTANE_WORKERS:-auto} \
-    --max-requests=${OCTANE_MAX_REQUESTS:-500}
+    --max-requests=${OCTANE_MAX_REQUESTS:-500} \
+    --https
