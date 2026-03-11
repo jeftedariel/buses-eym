@@ -111,7 +111,7 @@ class DashboardPanelProvider extends PanelProvider
                     ->withBorder()
                     ->withLoadTime()
                     ->withLogo(
-                        'https://www.boltbitcr.com/_astro/boltbit.C81cBDwe.png',
+                        'https://www.boltbitcr.com/boltbit.png',
                         'https://www.boltbitcr.com',
                         'Desarrollado por ',
                         25
