@@ -1,0 +1,67 @@
+.git
+.gitignore
+.gitattributes
+.github
+.editorconfig
+.idea
+.vscode
+.fleet
+.nova
+.zed
+.phpactor.json
+.phpunit.cache
+.phpunit.result.cache
+
+# Dependencies — reinstalled inside the image
+node_modules
+vendor
+
+# Build artefacts
+public/build
+public/hot
+public/storage
+
+# Stale Laravel bootstrap caches (regenerated at build / boot time)
+bootstrap/cache/*.php
+!bootstrap/cache/.gitignore
+
+# Logs & runtime state
+storage/logs/*
+!storage/logs/.gitignore
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing/*
+storage/pail
+storage/*.key
+
+# Environment & local files
+.env
+.env.backup
+.env.production
+.env.docker
+.env.*.local
+
+# Docker meta (keeps image cache stable when these change)
+docker-compose.yml
+docker-compose.override.yml
+Dockerfile.dockerignore
+
+# Tests & docs
+tests
+phpunit.xml
+README.md
+README.docker.md
+
+# SQLite local DBs
+database/*.sqlite
+database/*.sqlite-journal
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Leftover FrankenPHP/Caddy artefacts from previous setup
+**/caddy
+frankenphp
+frankenphp-worker.php

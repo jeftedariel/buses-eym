@@ -1,0 +1,139 @@
+name: buses-eym
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: buses-eym-app:latest
+    restart: unless-stopped
+    ports:
+      # Only port exposed to the host — Caddy on the host forwards here.
+      - "${APP_HOST_PORT:-7070}:7070"
+    environment:
+      APP_NAME: "${APP_NAME:-Buses EYM}"
+      APP_ENV: "${APP_ENV:-production}"
+      APP_KEY: "${APP_KEY:-}"
+      APP_DEBUG: "${APP_DEBUG:-false}"
+      APP_URL: "${APP_URL:-http://localhost:7070}"
+      APP_LOCALE: "${APP_LOCALE:-en}"
+      APP_FALLBACK_LOCALE: "${APP_FALLBACK_LOCALE:-en}"
+
+      LOG_CHANNEL: "${LOG_CHANNEL:-stack}"
+      LOG_STACK: "${LOG_STACK:-single}"
+      LOG_LEVEL: "${LOG_LEVEL:-info}"
+
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: "${POSTGRES_DB:-buses_eym}"
+      DB_USERNAME: "${POSTGRES_USER:-buses_eym}"
+      DB_PASSWORD: "${POSTGRES_PASSWORD:-buses_eym_secret}"
+
+      SESSION_DRIVER: database
+      SESSION_LIFETIME: 120
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      BROADCAST_CONNECTION: log
+
+      FILESYSTEM_DISK: s3
+      AWS_ACCESS_KEY_ID: "${MINIO_ROOT_USER:-minioadmin}"
+      AWS_SECRET_ACCESS_KEY: "${MINIO_ROOT_PASSWORD:-minioadmin}"
+      AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION:-us-east-1}"
+      AWS_BUCKET: "${MINIO_BUCKET:-uploads}"
+      AWS_URL: "${AWS_URL:-http://localhost:9000/${MINIO_BUCKET:-uploads}}"
+      AWS_ENDPOINT: "http://minio:9000"
+      AWS_USE_PATH_STYLE_ENDPOINT: "true"
+
+      MAIL_MAILER: "${MAIL_MAILER:-log}"
+
+      RUN_SEEDERS: "${RUN_SEEDERS:-false}"
+    volumes:
+      - app_storage:/var/www/html/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:7070/up || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB:-buses_eym}"
+      POSTGRES_USER: "${POSTGRES_USER:-buses_eym}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-buses_eym_secret}"
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-buses_eym} -d ${POSTGRES_DB:-buses_eym}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER:-minioadmin}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:-minioadmin}"
+    ports:
+      # Exposed to the host for debugging / direct access.
+      # Remove these lines if you only want in-network access.
+      - "${MINIO_API_HOST_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_HOST_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      set -e;
+      mc alias set local http://minio:9000 \"$${MINIO_ROOT_USER}\" \"$${MINIO_ROOT_PASSWORD}\";
+      mc mb --ignore-existing local/\"$${MINIO_BUCKET}\";
+      mc anonymous set download local/\"$${MINIO_BUCKET}\" || true;
+      echo 'MinIO bucket ready: '\"$${MINIO_BUCKET}\";
+      "
+    environment:
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER:-minioadmin}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:-minioadmin}"
+      MINIO_BUCKET: "${MINIO_BUCKET:-uploads}"
+    networks:
+      - internal
+    restart: "no"
+
+volumes:
+  db_data:
+  minio_data:
+  app_storage:
+
+networks:
+  internal:
+    driver: bridge
