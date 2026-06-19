@@ -349,7 +349,10 @@
                     @foreach($chunk as $image)
                     <td style="padding:8px; width:25%; vertical-align:top;">
                         <div style=" solid #e2e8f0; overflow:hidden; background:#fff; display:flex; align-items:center; justify-content:center; height:140px;">
-                            <img src="{{ storage_path('app/public/' . $image) }}" alt="Imagen del vehículo" style="display:block; max-width:100%; max-height:140px; width:auto; height:auto; object-fit:contain;">
+                            @php($imageSrc = \App\Support\PdfImage::dataUri($image))
+                            @if($imageSrc)
+                            <img src="{{ $imageSrc }}" alt="Imagen del vehículo" style="display:block; max-width:100%; max-height:140px; width:auto; height:auto; object-fit:contain;">
+                            @endif
                         </div>
                     </td>
                     @endforeach
