@@ -1,7 +1,7 @@
-{{-- Galería en tabla, 4 por fila (a prueba de DOMPDF). Recibe $images. --}}
+{{-- Galería: única fuente de fotos. 4 por fila, a prueba de DOMPDF. --}}
 @if($images && count($images) > 0)
 <div class="section">
-    <div class="section-label">Galería de imágenes</div>
+    <div class="section-label">Galería</div>
     <table class="gallery">
         @foreach(collect($images)->chunk(4) as $chunk)
         <tr>
