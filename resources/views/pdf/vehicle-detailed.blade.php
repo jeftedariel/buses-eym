@@ -16,7 +16,7 @@
         $statusBadge = '<span class="badge ' . $statusClass . '">' . e($statusName) . '</span>';
     @endphp
 
-    @include('pdf.partials._hero', ['vehicle' => $vehicle, 'statusBadge' => $statusBadge])
+    @include('pdf.partials._masthead', ['vehicle' => $vehicle, 'statusBadge' => $statusBadge])
 
     @include('pdf.partials._stats', ['vehicle' => $vehicle])
 
@@ -28,13 +28,19 @@
                 'Tipo' => $vehicle->model->type->name,
                 'Placa' => $vehicle->license_plate,
                 'Color' => $vehicle->color,
-                'Cilindrada del motor' => $vehicle->motor_displacement ? $vehicle->motor_displacement . ' L' : null,
+                'Cilindrada' => $vehicle->motor_displacement ? $vehicle->motor_displacement . ' L' : null,
                 'Capacidad' => $vehicle->capacity ? $vehicle->capacity . ' asientos' : null,
-                'Notas internas' => $vehicle->description,
             ], fn ($v) => filled($v));
         @endphp
         @include('pdf.partials._spec_table', ['rows' => $rows])
     </div>
+
+    @if($vehicle->description)
+    <div class="section">
+        <div class="section-label">Notas internas</div>
+        <p style="font-size: 11px; color: #334155;">{{ $vehicle->description }}</p>
+    </div>
+    @endif
 
     @if($vehicle->statusHistories->count() > 0)
     <div class="section">
@@ -48,7 +54,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($vehicle->statusHistories->sortByDesc('created_at')->take(15) as $history)
+                @foreach($vehicle->statusHistories->sortByDesc('created_at')->take(8) as $history)
                 @php
                     $hName = $history->status->name;
                     $hClass = match ($hName) {
@@ -68,14 +74,13 @@
                 @endforeach
             </tbody>
         </table>
-        @if($vehicle->statusHistories->count() > 15)
-        <p style="margin-top: 8px; font-size: 10px; color: #64748b;">
-            Mostrando los últimos 15 cambios. Total: {{ $vehicle->statusHistories->count() }}
+        @if($vehicle->statusHistories->count() > 8)
+        <p style="margin-top: 8px; font-size: 9px; color: #94a3b8;">
+            Mostrando los últimos 8 cambios. Total: {{ $vehicle->statusHistories->count() }}
         </p>
         @endif
     </div>
     @endif
 
-    {{-- La primera imagen ya se usó en el hero --}}
-    @include('pdf.partials._gallery', ['images' => collect($vehicle->images ?? [])->skip(1)->values()])
+    @include('pdf.partials._gallery', ['images' => $vehicle->images ?? []])
 @endsection

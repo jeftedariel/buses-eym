@@ -3,7 +3,7 @@
 @section('title', 'Ficha del vehículo')
 
 @section('content')
-    @include('pdf.partials._hero', ['vehicle' => $vehicle])
+    @include('pdf.partials._masthead', ['vehicle' => $vehicle])
 
     @include('pdf.partials._stats', ['vehicle' => $vehicle])
 
@@ -14,13 +14,13 @@
                 'Tipo' => $vehicle->model->type->name,
                 'Color' => $vehicle->color,
                 'Placa' => $vehicle->license_plate,
-                'Cilindrada del motor' => $vehicle->motor_displacement ? $vehicle->motor_displacement . ' L' : null,
+                'Cilindrada' => $vehicle->motor_displacement ? $vehicle->motor_displacement . ' L' : null,
                 'Capacidad' => $vehicle->capacity ? $vehicle->capacity . ' pasajeros' : null,
+                'Año' => $vehicle->model->year,
             ], fn ($v) => filled($v));
         @endphp
         @include('pdf.partials._spec_table', ['rows' => $rows])
     </div>
 
-    {{-- La primera imagen ya se usó en el hero --}}
-    @include('pdf.partials._gallery', ['images' => collect($vehicle->images ?? [])->skip(1)->values()])
+    @include('pdf.partials._gallery', ['images' => $vehicle->images ?? []])
 @endsection
