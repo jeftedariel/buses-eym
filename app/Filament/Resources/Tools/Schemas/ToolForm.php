@@ -27,6 +27,7 @@ class ToolForm
                             ->imageEditor()
                             ->optimize('webp')
                             ->resize(50)
+                            ->visibility('public')
                             ->directory('tools'),
                 Select::make('type_id')
                     ->label('Tipo de Herramienta')

@@ -58,6 +58,7 @@ class SupplyForm
                             ->imageEditor()
                             ->optimize('webp')
                             ->resize(50)
+                            ->visibility('public')
                             ->directory('supplies'),
             ]);
     }

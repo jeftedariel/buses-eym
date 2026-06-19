@@ -29,6 +29,7 @@ class SuppliesTable
             ->columns([
                 ImageColumn::make('images')
                     ->label('Img')
+                    ->visibility('public')
                     ->imageHeight(35)
                     ->stacked()
                     ->limit(3)

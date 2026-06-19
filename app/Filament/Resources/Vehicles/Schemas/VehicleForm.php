@@ -99,6 +99,7 @@ class VehicleForm
                     ->multiple()
                     ->optimize('webp')
                     ->resize(50)
+                    ->visibility('public')
                     ->directory('vehicles'),
                 Textarea::make('description')
                     ->columnSpanFull(),

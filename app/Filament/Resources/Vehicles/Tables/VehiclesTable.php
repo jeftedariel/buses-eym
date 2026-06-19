@@ -31,6 +31,7 @@ class VehiclesTable
             ->columns([
                 ImageColumn::make('images')
                     ->label('Img')
+                    ->visibility('public')
                     ->imageHeight(30)
                     ->circular()
                     ->stacked()

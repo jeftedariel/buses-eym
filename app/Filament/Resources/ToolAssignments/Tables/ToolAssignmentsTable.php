@@ -18,6 +18,7 @@ class ToolAssignmentsTable
             ->columns([
                 ImageColumn::make('tool.images')
                     ->label('Img')
+                    ->visibility('public')
                     ->imageHeight(35)
                     ->stacked()
                     ->limit(3)

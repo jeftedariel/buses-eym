@@ -31,6 +31,7 @@ class SupplyWithdrawalHistoriesTable
             ->columns([
                 ImageColumn::make('supply.images')
                     ->label('Img')
+                    ->visibility('public')
                     ->imageHeight(35)
                     ->stacked()
                     ->limit(3)
